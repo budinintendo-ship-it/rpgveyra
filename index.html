@@ -1,0 +1,1448 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#102b36"><title>Echoes of Veyra — Desa Veyra</title>
+<style>
+:root{--ink:#f5f0d9;--gold:#f5cf78;--panel:#102b36ee;--line:#7fb69d}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b2029;color:var(--ink);font-family:system-ui,-apple-system,sans-serif;touch-action:none}#game{position:absolute;inset:0;width:100%;height:100%;image-rendering:auto;background:#274c43}.topbar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;padding:calc(10px + env(safe-area-inset-top)) 12px 0;pointer-events:none;gap:10px}.brand,.location{background:var(--panel);border:1px solid #5f9581;border-radius:8px;padding:7px 10px;box-shadow:0 3px 12px #0004}.brand b{display:block;font:700 15px Georgia,serif;letter-spacing:.6px;color:var(--gold)}.brand small,.location{font-size:10px}.location{text-align:right;max-width:45%}.hint{position:absolute;top:78px;left:50%;transform:translateX(-50%);background:#102b36df;border:1px solid #679b86;padding:7px 11px;border-radius:20px;font-size:11px;white-space:nowrap;pointer-events:none}.dialog{position:absolute;left:12px;right:12px;bottom:calc(105px + env(safe-area-inset-bottom));background:#091d2af2;border:2px solid #c5a96c;border-radius:10px;padding:12px 14px;display:none;box-shadow:0 5px 20px #0008}.dialog.show{display:block}.dialog b{color:var(--gold);display:block;margin-bottom:5px}.dialog p{font-size:13px;line-height:1.4;margin:0}.controls{position:absolute;left:0;right:0;bottom:calc(12px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:flex-end;padding:0 18px;pointer-events:none}.pad{width:142px;height:142px;position:relative;pointer-events:auto;touch-action:none}.stick-base{position:absolute;inset:14px;border-radius:50%;background:#0c2637aa;border:1px solid #a4d5c0aa;box-shadow:inset 0 0 15px #0005}.stick{position:absolute;left:50%;top:50%;width:47px;height:47px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(145deg,#c1dfc7,#5b9d88);border:2px solid #e0f3d8;box-shadow:0 3px 8px #0007}.dpad-label{position:absolute;color:#e5f4df88;font-size:15px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}.buttons{display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:auto}.btn{border:1px solid #c9d7ae;background:linear-gradient(#497b6c,#234c48);color:#fff8dc;font-weight:800;border-radius:50%;width:65px;height:65px;box-shadow:0 4px 0 #102d30,0 5px 12px #0006;touch-action:manipulation}.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #102d30}.btn small{display:block;font-size:9px;font-weight:500}.secondary{border-radius:9px;width:auto;height:auto;padding:8px 11px;font-size:11px}.toast{position:absolute;bottom:calc(175px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#0c2028eF;border:1px solid #e0c37a;padding:8px 12px;border-radius:8px;font-size:12px;display:none;max-width:85%;text-align:center}.toast.show{display:block}.modal{position:absolute;inset:0;background:#06131ddd;display:none;align-items:center;justify-content:center;padding:18px;z-index:10;touch-action:manipulation}.modal.show{display:flex}.modal-card{width:min(100%,440px);max-height:78dvh;overflow:auto;background:#0c2637;border:2px solid #c5a96c;border-radius:12px;padding:15px}.modal-card h2{color:var(--gold);margin:0 0 10px}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions button,.item-row button,.wide-btn{background:#214b4a;color:#fff4d5;border:1px solid #80b8a3;border-radius:7px;padding:10px;font-weight:700}.item-row{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid #ffffff20;font-size:12px}.wide-btn{width:100%;margin-top:10px}.footer{position:absolute;bottom:calc(3px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:9px;color:#e4e8c6aa;white-space:nowrap;pointer-events:none}@media(min-width:760px){.controls{max-width:900px;left:50%;right:auto;width:100%;transform:translateX(-50%)}.dialog{max-width:760px;left:50%;right:auto;width:calc(100% - 24px);transform:translateX(-50%);bottom:150px}.hint{top:88px}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink: #f5f0e6;
+  --gold: #f3d18a;
+  --panel: rgba(10, 19, 37, .94);
+  --line: rgba(207, 177, 113, .75);
+}
+
+body {
+  color: var(--ink);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Nama game */
+.brand {
+  background: linear-gradient(135deg,
+    rgba(17, 31, 54, .97),
+    rgba(10, 17, 32, .94));
+  border: 1px solid var(--line);
+  box-shadow: 0 0 22px #7ec9ff18, 0 8px 25px #0007;
+  backdrop-filter: blur(10px);
+}
+
+.brand b {
+  font-family: "Cinzel", Georgia, serif;
+  color: var(--gold);
+  letter-spacing: 1.6px;
+  text-shadow: 0 0 14px #f3d18a35;
+}
+
+.brand small {
+  letter-spacing: 2px;
+  color: #d2deee;
+}
+
+.location, .hint {
+  background: rgba(10, 22, 39, .91);
+  border: 1px solid #9dbbd377;
+  box-shadow: 0 5px 20px #0005;
+  backdrop-filter: blur(8px);
+}
+
+.dialog, .modal-card {
+  background: linear-gradient(145deg,
+    rgba(19, 31, 53, .98),
+    rgba(7, 15, 29, .98));
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 45px #0009,
+              inset 0 0 25px #9bcfff08;
+}
+
+.dialog b, .modal-card h2 {
+  font-family: "Cinzel", Georgia, serif;
+  color: var(--gold);
+  letter-spacing: .7px;
+}
+
+button, .btn, .modal-actions button,
+.item-row button, .wide-btn {
+  font-family: "Inter", system-ui, sans-serif;
+  transition: filter .15s ease, border-color .15s ease;
+}
+
+.buttons .btn:not(.secondary) {
+  background: linear-gradient(145deg, #527e91, #203d5a);
+  border: 1px solid #c6e3e8;
+  box-shadow: 0 4px 0 #142637, 0 0 20px #7bd5ff19;
+}
+
+.buttons .secondary {
+  background: linear-gradient(145deg, #263955, #111b30);
+  border: 1px solid var(--line);
+}
+
+.modal-actions button, .item-row button, .wide-btn {
+  background: linear-gradient(145deg, #304e68, #17283e);
+  border: 1px solid #bca36f;
+  color: #fff0ce;
+}
+
+button:hover {
+  filter: brightness(1.18);
+}
+
+.footer {
+  color: #f3e4c2b0;
+  letter-spacing: .4px;
+}
+#pad {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+</style>
+
+<style id="veyra-visual-polish">
+:root{--ink:#fff6df;--gold:#f7d68d;--panel:rgba(8,18,35,.88);--line:rgba(245,211,135,.72)}
+body{background:#081522;color:#fff5df}
+#game{filter:saturate(1.12) contrast(1.035)}
+.topbar{padding:calc(14px + env(safe-area-inset-top)) 16px 0;gap:12px}
+.brand,.location{border:1px solid #f1d28c88;border-radius:12px;background:linear-gradient(135deg,rgba(7,19,38,.96),rgba(17,44,61,.88));box-shadow:0 8px 26px #0007,inset 0 0 18px #7fdcff0c;backdrop-filter:blur(12px)}
+.brand{padding:10px 14px}.brand b{font-size:clamp(14px,2vw,20px);letter-spacing:2px;text-shadow:0 0 16px #f6d98c55}.brand small{font-size:9px;letter-spacing:2.8px;color:#b8d8eb}
+.location{padding:10px 13px;font-size:11px;line-height:1.55;color:#fff1c9}
+.hint{top:calc(76px + env(safe-area-inset-top));padding:9px 15px;border-radius:24px;background:linear-gradient(100deg,#07182deF,#123a4beF);border:1px solid #9bdcf588;box-shadow:0 0 22px #63dfff20,0 5px 20px #0005;font-weight:600;letter-spacing:.1px}
+#questHUD,#progressHUD,#inventoryHUD{background:linear-gradient(145deg,rgba(8,21,39,.94),rgba(12,39,51,.88))!important;border:1px solid #e4c47799!important;border-radius:12px!important;box-shadow:0 8px 25px #0006,inset 0 0 18px #7bdcff0b;backdrop-filter:blur(10px);font-family:Inter,system-ui,sans-serif!important}
+#questHUD{padding:13px!important}#questHUD>div:first-child{font-family:Cinzel,Georgia,serif;font-size:10px!important;letter-spacing:2.5px!important;color:#f7d68d!important}#questHUDTitle{font-family:Cinzel,Georgia,serif;font-size:13px;color:#fff0c6}#questHUDText{color:#d2e5ee}
+#progressHUD{border-radius:22px!important;padding:9px 14px!important;color:#fff0c6!important;box-shadow:0 0 20px #5edcff16}
+.controls{padding:0 20px}.pad{filter:drop-shadow(0 8px 14px #0007)}.stick-base{background:radial-gradient(circle at 40% 30%,#356b7c99,#071a2ddf 72%);border:1px solid #a9e7f2aa;box-shadow:inset 0 0 24px #53d7ff25,0 0 16px #4fcfff22}.stick{background:linear-gradient(145deg,#e0f7e6,#62b5bf 60%,#38728e);border:2px solid #efffe8;box-shadow:0 0 14px #8deeff66,inset 0 0 8px #fff8}
+.buttons .btn{background:linear-gradient(145deg,#315e78,#0d253e);border:1px solid #b9e8e9;box-shadow:0 4px 0 #071627,0 0 22px #4acaff22;color:#fff3d1}.buttons .secondary{background:linear-gradient(145deg,#273c58,#0c172b);border-color:#e7c77c}
+.dialog{border:1px solid #f2d18a;border-radius:15px;box-shadow:0 15px 42px #0009,inset 0 0 28px #73cfff0c;backdrop-filter:blur(14px)}.dialog p{color:#e4edf2;line-height:1.55}.dialog b{font-family:Cinzel,Georgia,serif;font-size:15px}
+.modal{backdrop-filter:blur(7px)}.modal-card{border-radius:16px;padding:20px;background:linear-gradient(145deg,#102c43,#081426);box-shadow:0 20px 60px #000b,inset 0 0 25px #80dfff0a}.modal-card h2{font-size:20px}.modal-actions button,.item-row button,.wide-btn{border-radius:9px;min-height:42px;box-shadow:inset 0 1px #ffffff13,0 4px 12px #0003}.toast{border-radius:22px;background:linear-gradient(100deg,#08182bf2,#12394bf2);border:1px solid #f1d28c;box-shadow:0 0 22px #6edfff24;padding:10px 16px}
+.footer{font-family:Cinzel,Georgia,serif;letter-spacing:1px;text-shadow:0 2px 5px #000}
+@media(max-width:600px){#questHUD{top:61px!important;right:9px!important;width:min(190px,52vw)!important;padding:9px!important}#questHUDTitle{font-size:11px!important}#questHUDText{font-size:10px!important}#progressHUD{bottom:12px!important;left:10px!important;font-size:11px!important}.controls{padding:0 12px}.pad{width:126px;height:126px}.buttons .btn{width:59px;height:59px}.hint{max-width:92vw;white-space:normal;text-align:center;font-size:10px}}
+</style>
+
+<style id="mobile-ui-v53">
+/* v5.3: tata letak HUD yang tidak saling menimpa (HP & desktop). Semua offset memakai safe-area. */
+:root{--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);--ctl-h:158px}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.topbar{padding:calc(8px + var(--safe-t)) 9px 0!important;gap:8px!important}
+.brand,.location{padding:6px 9px!important;border-radius:10px!important;line-height:1.3!important}
+.brand{max-width:56%}.location{max-width:42%!important}
+.brand b{font-size:13px!important;letter-spacing:.4px!important;white-space:nowrap}
+.brand small{font-size:8.5px!important;letter-spacing:1.2px;white-space:nowrap}
+.location{font-size:11px!important}
+#questHUD{top:calc(var(--safe-t) + 64px)!important;right:9px!important;left:auto!important;width:min(184px,48vw)!important;padding:7px 9px!important}
+#questHUD>div:first-child{font-size:8.5px!important;letter-spacing:2px!important}
+#questHUDTitle{font-size:11px!important;margin-top:3px!important;line-height:1.25}
+#questHUDText{font-size:10px!important;margin-top:4px!important;line-height:1.35!important}
+#progressHUD{top:calc(var(--safe-t) + 64px)!important;bottom:auto!important;left:9px!important;padding:5px 9px!important;font-size:11px!important;border-radius:10px!important;white-space:nowrap}
+#inventoryHUD{top:calc(var(--safe-t) + 100px)!important;bottom:auto!important;left:9px!important;width:150px!important;font-size:12px!important}
+.controls{bottom:calc(10px + var(--safe-b))!important;padding:0 12px!important}
+.hint{top:auto!important;bottom:calc(var(--ctl-h) + var(--safe-b))!important;left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);width:max-content;white-space:normal!important;text-align:center;font-size:11px!important;line-height:1.3;padding:6px 12px!important;border-radius:14px!important}
+.dialog{bottom:calc(var(--ctl-h) + var(--safe-b))!important;width:calc(100% - 20px)!important;max-height:min(34dvh,200px);overflow-y:auto;padding:10px 12px!important;z-index:15}
+.dialog p{font-size:13px!important}
+.toast{top:auto!important;bottom:calc(var(--ctl-h) + 44px + var(--safe-b))!important;max-width:calc(100% - 24px)!important;z-index:16;line-height:1.3}
+body:has(.dialog.show) .hint{display:none}
+body:has(.dialog.show) .toast{bottom:calc(var(--ctl-h) + min(34dvh,200px) + 10px + var(--safe-b))!important}
+.footer{display:none!important}
+@media(min-width:1000px){.footer{display:block!important}}
+@media(min-width:700px){.brand b{font-size:15px!important}.brand small{font-size:10px!important}.location{font-size:12px!important}#questHUD{width:220px!important}.hint{bottom:calc(var(--ctl-h) + var(--safe-b))!important}}
+.dialog{max-width:560px!important}
+.topbar,#questHUD,#progressHUD,#inventoryHUD,.hint,.dialog,.toast,.controls,.modal-card,.footer{zoom:var(--ui,1)}
+@media(max-height:520px){:root{--ctl-h:130px}.pad{width:116px!important;height:116px!important}#questHUD{display:none}}
+</style>
+</head><body><canvas id="game" aria-label="Peta desa Veyra yang dapat dijelajahi"></canvas><div class="topbar"><div class="brand"><b>ECHOES OF VEYRA</b><small>THE EXILED SOULS · v5.5</small></div><div class="location" id="location">DESA VEYRA<br><span style="color:#b8d9c6">Pagi yang tenang</span></div></div><div class="hint" id="hint">Sentuh tanah untuk berjalan · sentuh orang atau bangunan untuk berinteraksi</div><div class="dialog" id="dialog"><b id="dialogTitle">Penduduk Desa</b><p id="dialogText"></p></div><div class="toast" id="toast"></div><div class="modal" id="modal"><div class="modal-card"><h2 id="modalTitle">Menu</h2><div id="modalBody"></div><button class="wide-btn" id="modalClose">TUTUP</button></div></div><div class="controls"><div class="pad" id="pad"><div class="stick-base"></div><div class="dpad-label">✥</div><div class="stick" id="stick"></div></div><div class="buttons"><button class="btn" id="interact">A<small>INTERAKSI</small></button><button class="btn secondary" id="menu">MENU</button></div></div><div class="footer">Sentuh tanah untuk berjalan · sentuh NPC/bangunan untuk pilihan · joystick dan WASD juga bisa</div>
+<div id="questHUD" style="
+  position:absolute;
+  top:65px;
+  right:16px;
+  left:auto;
+  width:220px;
+  padding:12px;
+  background:rgba(15,20,30,0.88);
+  border:2px solid #b99a5b;
+  border-radius:8px;
+  color:#f5e7c2;
+  font-family:Arial,sans-serif;
+  z-index:20;
+  pointer-events:none;
+">
+  <div style="font-size:11px;color:#e5c477;letter-spacing:2px;">
+    QUEST
+  </div>
+  <div id="questHUDTitle" style="font-weight:bold;margin-top:6px;">
+    Bisikan dari Sumur Tua
+  </div>
+  <div id="questHUDText" style="font-size:12px;margin-top:8px;line-height:1.5;">
+    Bicaralah dengan Mira.
+  </div>
+</div>
+
+<div id="progressHUD" style="
+  position:absolute;
+  bottom:16px;
+  left:16px;
+  padding:8px 12px;
+  background:rgba(15,20,30,0.88);
+  border:1px solid #b99a5b;
+  border-radius:6px;
+  color:#f5e7c2;
+  font: bold 13px Arial,sans-serif;
+  z-index:21;
+  pointer-events:none;
+">
+  Lv. 1 | EXP: 0/100
+</div>
+
+<div id="inventoryHUD" style="
+  position:absolute;
+  bottom:70px;
+  left:16px;
+  width:180px;
+  padding:10px;
+  background:rgba(15,20,30,0.9);
+  border:1px solid #b99a5b;
+  border-radius:8px;
+  color:#f5e7c2;
+  font:13px Arial,sans-serif;
+  white-space:pre-line;
+  z-index:21;
+  display:none;
+  pointer-events:none;
+">
+  <b>INVENTARIS</b>
+  <div id="inventoryText">HP: 100/100
+Ramuan: 2
+Ether: 1</div>
+</div>
+
+<script>
+(()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1;function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);if(typeof applyUiScale==='function')applyUiScale()}function applyUiScale(){const u=Math.max(.82,Math.min(1.5,Math.sqrt(W*H)/560));document.documentElement.style.setProperty('--ui',u.toFixed(3))}addEventListener('resize',resize);resize();
+function loadPartyData() {
+    const defaultData = {
+        gil: 100,
+        inventory: [
+            { id: "potion", name: "Potion", qty: 3, type: "consumable", target: "hp", value: 50 },
+            { id: "ether", name: "Ether", qty: 1, type: "consumable", target: "mp", value: 30 }
+        ],
+        party: {
+            kael: { name: "Kael", class: "Veilblade", hp: 120, maxHp: 120, mp: 40, maxMp: 40 }
+        }
+    };
+    const savedData = localStorage.getItem("veyra_party_data");
+    if (!savedData) {
+        localStorage.setItem("veyra_party_data", JSON.stringify(defaultData));
+        return defaultData;
+    }
+    return JSON.parse(savedData);
+}
+
+function savePartyData(data) {
+    localStorage.setItem("veyra_party_data", JSON.stringify(data));
+}
+
+// Jalankan inisialisasi awal saat desa dimuat
+let globalGameData = loadPartyData();
+
+
+const TS = 32, MW = 42, MH = 34;
+
+
+const map = Array.from({ length: MH }, (_, y) =>
+  Array.from({ length: MW }, (_, x) => {
+    // Batas luar desa
+    if (x < 1 || y < 1 || x > MW - 2 || y > MH - 2) {
+      return 1;
+    }
+
+    // Jalan utama desa
+    if (y >= 15 && y <= 17) return 2;
+    if (x >= 19 && x <= 21) return 2;
+    
+    // Jalan menuju Rumah Tetua
+    if (x >= 7 && x <= 9 && y >= 10 && y <= 15) return 2;
+
+    // Jalan menuju Penginapan
+    if (x >= 14 && x <= 16 && y >= 10 && y <= 15) return 2;
+
+    // Jalan menuju Rumah Lyria
+    if (x >= 28 && x <= 30 && y >= 9 && y <= 15) return 2;
+
+    // Jalan menuju Gudang
+    if (x >= 7 && x <= 9 && y >= 18 && y <= 22) return 2;
+
+    // Jalan menuju Toko Desa
+    if (x >= 30 && x <= 32 && y >= 18 && y <= 22) return 2;
+
+    // Area lapangan tengah
+    if (x >= 17 && x <= 23 && y >= 12 && y <= 20) return 0;
+
+    // Pohon di tepian desa
+    if ((x === 3 || x === 38) && y % 3 === 0 && !(y >= 14 && y <= 17)) return 3;
+    if ((y === 3 || y === 29) && x % 4 === 0) return 3;
+
+    return 0;
+  })
+);
+
+
+// Paths and clearing
+for(let x=3;x<39;x++)for(let y=14;y<=17;y++)map[y][x]=2;for(let y=7;y<28;y++)for(let x=19;x<=22;x++)map[y][x]=2;
+// Hutan Berbisik: lantai hutan dan rumpun pepohonan di utara-timur desa
+for(let y=4;y<=13;y++){for(let x=33;x<=39;x++){if(!((x===35||x===36)&&y>=8&&y<=13)&&((x*7+y*11)%5===0))map[y][x]=3;}}
+for(let y=8;y<=13;y++)for(let x=35;x<=36;x++)map[y][x]=0;
+// Pastikan koridor utama dan jalan menuju gerbang timur tetap bebas pepohonan.
+for(let x=32;x<=40;x++)for(let y=9;y<=13;y++)if(x>=35&&x<=37)map[y][x]=0;
+for(let x=3;x<39;x++)for(let y=14;y<=17;y++)map[y][x]=2;
+const houses=[{x:5,y:6,w:5,h:4,name:'Rumah Tetua',color:'#a75c47',roof:'#713d3c'},{x:13,y:5,w:5,h:5,name:'Penginapan',color:'#c58a50',roof:'#76452e'},{x:26,y:5,w:6,h:4,name:'Rumah Lyria',color:'#8796a4',roof:'#45566c'},{x:29,y:22,w:6,h:4,name:'Toko Desa',color:'#d1b36c',roof:'#6b5140'},{x:6,y:23,w:5,h:4,name:'Gudang',color:'#b98a63',roof:'#684c3e'}];
+// block house footprints, leave approach tiles
+for(const h of houses)for(let y=h.y;y<h.y+h.h;y++)for(let x=h.x;x<h.x+h.w;x++)map[y][x]=4;
+
+// Dunia terpisah: Hutan Berbisik, dengan layout sendiri.
+const forestMap = Array.from({length: MH}, (_, y) => Array.from({length: MW}, (_, x) => {
+  if (x < 1 || y < 1 || x > MW-2 || y > MH-2) return 1;
+  // Jalur hutan sempit dan berkelok: pintu masuk di sisi barat, lalu
+  // berliku menuju utara dan kembali ke timur; pepohonan mengisi sisanya.
+  const pathX = 4 + Math.round(2.1*Math.sin((y-8)/4.2)) + Math.round(1.1*Math.sin(y/2.3));
+  const path2X = 10 + Math.round(2.2*Math.sin((y-10)/4.5));
+  const path3X = 18 + Math.round(2.6*Math.sin((y-14)/4.8));
+  const path4Y = 20 + Math.round(1.8*Math.sin(x/3.8));
+  const winding = (Math.abs(x-pathX)<=1 && y>=13 && y<=22) ||
+    (Math.abs(y-(13+Math.round(2*Math.sin(x/3.5))) )<=1 && x>=4 && x<=13) ||
+    (Math.abs(x-path2X)<=1 && y>=9 && y<=16) ||
+    (Math.abs(y-(12+Math.round(2*Math.sin(x/4.2))) )<=1 && x>=10 && x<=22) ||
+    (Math.abs(x-path3X)<=1 && y>=10 && y<=20) ||
+    (Math.abs(y-path4Y)<=1 && x>=17 && x<=31) ||
+    (x>=2&&x<=5&&y>=14&&y<=18); // sambungan gerbang pulang
+  if (winding) return 2;
+  // Tebing batu membentuk batas berlekuk dan ceruk kecil di luar setapak.
+  // Tile pohon (3) bersifat dekoratif dan tetap bisa dilewati; hanya tebing (4) yang menghalangi.
+  const cliffA = (x===8 && y>=8 && y<=12) || (x===9 && y>=8 && y<=10) ||
+                 (x===15 && y>=16 && y<=19) || (x===16 && y>=17 && y<=19) ||
+                 (x>=24 && x<=27 && y===8) || (x===27 && y>=9 && y<=11) ||
+                 (x>=20 && x<=22 && y===24) || (x===22 && y>=21 && y<=24);
+  if (cliffA) return 4;
+  return ((x*13+y*17+x*y)%7<4)?3:0;
+}));
+let activeWorld='village', forestEncounterDistance=0, nextEncounterAt=5+Math.random()*4;
+
+
+const objects = [
+  {
+    x: 10.5, y: 12.5,
+    type: 'npc',
+    name: 'Mira, penjaga desa',
+    title: 'Mira',
+    text: 'Selamat datang di Veyra. Belakangan ini, gema aneh terdengar dari hutan di utara. Tetua sedang mencari tahu asalnya.'
+  },
+  {
+    x: 15.5, y: 12.5,
+    type: 'shop',
+    name: 'Pedagang',
+    title: 'Pedagang Keliling',
+    text: 'Selamat datang! Aku menjual ramuan dan ether untuk perjalananmu.'
+  },
+  {
+    x: 24.5, y: 18.5,
+    type: 'npc',
+    name: 'Penjaga',
+    title: 'Penjaga Desa',
+    text: 'Jalur timur masih aman. Jangan pergi terlalu jauh tanpa persiapan—kabut di luar desa bisa menyesatkan.'
+  },
+  {
+    x: 12, y: 19,
+    type: 'sign',
+    name: 'Papan Pengumuman',
+    title: 'Papan Pengumuman',
+    text: 'PENGUMUMAN DESA VEYRA\nWarga diminta melapor bila mendengar bisikan dari sumur tua.'
+  },
+  {
+    x: 21.5, y: 12.5,
+    type: 'well',
+    name: 'Sumur Tua',
+    title: 'Sumur Tua',
+    text: 'Airnya tenang, tetapi gema halus terdengar dari kedalaman. Seolah ada sesuatu yang memanggil.'
+  },
+  {
+    x: 25.5, y: 25,
+    type: 'sign',
+    name: 'Papan Petunjuk',
+    title: 'Papan Petunjuk',
+    text: 'Utara: Hutan Berbisik\nBarat: Ladang\nTimur: Jalan keluar desa\n\nWilayah lain akan dibuka pada tahap berikutnya.'
+  }
+];
+
+const quest = {
+  title: "Bisikan dari Sumur Tua",
+  status: "belum",
+  description: "Bicaralah dengan Mira."
+};
+
+const playerProgress = {
+  level: 1,
+  exp: 0,
+  nextLevelExp: 100
+};
+
+const consumables = {
+  potion: 2,
+  ether: 1
+};
+
+const playerStats = {
+  hp: 100, maxHp: 100, mp: 30, maxMp: 30,
+  atk: 18, def: 10, matk: 12, mdef: 10
+};
+
+function usePotion() {
+  if (gameState.items.potion <= 0) {
+    showToast('Ramuanmu habis!');
+    return;
+  }
+
+  if (playerStats.hp >= playerStats.maxHp) {
+    showToast('HP masih penuh!');
+    return;
+  }
+
+  gameState.items.potion--;
+  playerStats.hp = Math.min(
+    playerStats.hp + 30,
+    playerStats.maxHp
+  );
+
+  updateInventoryHUD();
+  showToast('Ramuan digunakan! HP pulih 30.');
+}
+
+function updateInventoryHUD() {
+  const el = document.getElementById('inventoryText');
+  if (!el) return;
+
+  el.textContent =
+    'HP: ' + playerStats.hp + '/' + playerStats.maxHp +
+    '\nRamuan: ' + gameState.items.potion +
+    '\nEther: ' + gameState.items.ether;
+}
+
+function gainExp(amount) {
+  playerProgress.exp += amount;
+  while (playerProgress.exp >= playerProgress.nextLevelExp) {
+    playerProgress.exp -= playerProgress.nextLevelExp;
+    playerProgress.level++;
+    playerProgress.nextLevelExp = playerProgress.level * 100;
+    playerStats.maxHp += 15;
+    playerStats.hp = Math.min(playerStats.maxHp, playerStats.hp + 15);
+    playerStats.maxMp += 5;
+    playerStats.mp = Math.min(playerStats.maxMp, playerStats.mp + 5);
+    playerStats.atk += 2; playerStats.def += 1; playerStats.matk += 2; playerStats.mdef += 1;
+    showToast('LEVEL UP! Lv.' + playerProgress.level + ' · HP +15 · MP +5 · ATK/MATK +2 · DEF/MDEF +1');
+  }
+  updateProgressHUD();
+  updateInventoryHUD();
+}
+
+function updateProgressHUD() {
+  const el = document.getElementById('progressHUD');
+
+  if (!el) return;
+
+  el.textContent =
+    'Lv. ' + playerProgress.level +
+    '  |  EXP: ' + playerProgress.exp +
+    '/' + playerProgress.nextLevelExp;
+}
+
+updateProgressHUD();
+
+
+function startQuest() {
+  if (quest.status === "belum") {
+    quest.status = "aktif";
+    quest.description = "Periksa Sumur Tua di desa.";
+  }
+}
+
+function completeQuest() {
+  if (quest.status === 'aktif') {
+    quest.status = 'selesai';
+    quest.description =
+      'Misi selesai! Kamu menemukan gema misterius.';
+
+    gainExp(50);
+    consumables.potion++;
+    gameState.items.potion++;
+    updateInventoryHUD();
+  }
+}
+
+function updateQuestHUD() {
+  document.getElementById('questHUDTitle').textContent =
+    quest.title;
+
+  let statusText = '';
+
+  if (quest.status === 'belum') {
+    statusText = 'Bicaralah dengan Mira.';
+  } else if (quest.status === 'aktif') {
+    statusText = 'Tujuan: Periksa Sumur Tua di desa.';
+  } else if (quest.status === 'selesai') {
+    statusText = '✓ MISI SELESAI!';
+  }
+
+  document.getElementById('questHUDText').textContent =
+    statusText;
+}
+
+updateQuestHUD();
+
+
+const mapMonsters=[]; // Random encounter, musuh tidak ditempatkan sebagai sprite tetap.
+const player={x:20.5,y:19.5,dir:'down',speed:4.15};const gameState={gold:120,items:{potion:3,ether:2}};const itemData={potion:{name:'Ramuan HP',price:25,desc:'Ramuan untuk perjalanan.'},ether:{name:'Ether',price:30,desc:'Memulihkan energi sihir.'}};const keys={};let joy={x:0,y:0},lastToast=0,tapTarget=null,pendingTapInteract=false,touchMarker=null,portalCooldown=0;const cam={x:0,y:0};let interior=null,Zm=1,Zw=1,VW=1,VH=1,camMode='auto';try{const m=localStorage.getItem('veyra-cam');if(m==='auto'||m==='follow')camMode=m}catch(e){}const fade={a:0,text:''};const colors={grass:'#477b59',grass2:'#52865b',path:'#b9a176',path2:'#c7b28a',water:'#316d78'};
+function tile(x,y){const activeMap=activeWorld==='interior'?interior.map:activeWorld==='forest'?forestMap:map;return activeMap[y]?.[x]??1}function blocked(x,y){const tx=Math.floor(x),ty=Math.floor(y);if(tile(tx,ty)===1||tile(tx,ty)===4)return true;if(activeWorld==='interior'){for(const n of interior.npcs)if(n.type==='npc'&&Math.hypot(x-n.x,y-n.y)<.5)return true}if(activeWorld==='village'){for(const h of houses){if(x>h.x-.1&&x<h.x+h.w+.1&&y>h.y-.1&&y<h.y+h.h+.1)return true}for(const o of objects){if(o.type==='npc'&&Math.hypot(x-o.x,y-o.y)<.42)return true}}return false}
+function roundRect(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke()}}
+
+function drawTile(t, x, y, tx, ty) {
+  tx=Math.abs(tx)+(tx<0?7:0);ty=Math.abs(ty)+(ty<0?5:0); // tile di luar peta: pakai indeks positif agar hash/palet valid
+  // Tebing batu berlapis; tile 4 menghalangi gerak dan membentuk ceruk eksplorasi.
+  if (t === 4 && activeWorld === 'forest') {
+    ctx.fillStyle = '#344b50'; ctx.fillRect(x,y,TS,TS);
+    ctx.fillStyle = '#52666a'; ctx.beginPath(); ctx.moveTo(x,y+5); ctx.lineTo(x+TS*.72,y); ctx.lineTo(x+TS,y+TS*.28); ctx.lineTo(x+TS*.78,y+TS*.65); ctx.lineTo(x+TS*.25,y+TS*.72); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#81908a'; ctx.fillRect(x+5,y+5,TS*.42,3); ctx.fillStyle='#263b40'; ctx.fillRect(x+8,y+TS*.55,TS*.58,3);
+    ctx.strokeStyle='#9aa9a0';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x+TS*.63,y+TS*.18);ctx.lineTo(x+TS*.52,y+TS*.38);ctx.lineTo(x+TS*.65,y+TS*.52);ctx.stroke();
+    ctx.fillStyle='#6e9b69'; ctx.beginPath();ctx.ellipse(x+7,y+TS-4,7,3,-.2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#b1d68a';ctx.fillRect(x+4,y+TS-7,3,2); return;
+  }
+  // Dunia fantasi: lapisan warna, batu bertekstur, lumut, bunga dan cahaya ambient.
+  // Variasi warna dasar tanah
+  if (t === 2) {
+    // Jalan desa
+    ctx.fillStyle = ((tx + ty) % 3 === 0)
+      ? "#c9b38b"
+      : "#b5a078";
+    ctx.fillRect(x, y, TS, TS);
+
+    // Tekstur batu kecil
+    ctx.fillStyle = "#8d795c66";
+    ctx.fillRect(x + 5, y + 7, 7, 2);
+    ctx.fillRect(x + 20, y + 21, 6, 2);
+    ctx.fillRect(x + 12, y + 27, 4, 2);
+
+    // Sorotan batu, sambungan dan lumut di sela jalan.
+    ctx.fillStyle = "#f8e9c755"; ctx.fillRect(x + 3, y + 3, 11, 2);
+    ctx.fillStyle = "#75674d88"; ctx.fillRect(x + 2, y + 15, 27, 1); ctx.fillRect(x + 15, y + 2, 1, 13);
+    if ((tx*7+ty*11)%5===0) { ctx.fillStyle='#6f956155'; ctx.fillRect(x+20,y+22,5,3); }
+  } else {
+    // Rumput dengan beberapa nuansa hijau
+    const variation = (tx * 13 + ty * 7) % 5;
+
+    const greens = [
+      "#477b59",
+      "#4d8059",
+      "#52865b",
+      "#447452",
+      "#58875b"
+    ];
+
+    ctx.fillStyle = greens[variation];
+    ctx.fillRect(x, y, TS, TS);
+
+    // Helai rumput kecil
+    for (let i = 0; i < 4; i++) {
+      const gx = x + ((tx * 17 + ty * 11 + i * 13) % 27) + 2;
+      const gy = y + ((tx * 7 + ty * 19 + i * 9) % 27) + 2;
+
+      ctx.strokeStyle = i % 2
+        ? "#a8cf7c99"
+        : "#274e3d99";
+
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(gx, gy + 3);
+      ctx.lineTo(gx - 1, gy);
+      ctx.lineTo(gx + 2, gy - 2);
+      ctx.stroke();
+    }
+
+    // Bercak lumut dan sulur kecil membuat rumput lebih kaya.
+    if ((tx*5+ty*13)%7===0) { ctx.fillStyle=activeWorld==='forest'?'#173f38aa':'#315b3d88'; ctx.beginPath(); ctx.ellipse(x+21,y+19,7,3,.4,0,Math.PI*2); ctx.fill(); }
+    if ((tx*11+ty*3)%9===0) { ctx.strokeStyle='#9acb7b88'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x+7,y+24); ctx.quadraticCurveTo(x+4,y+17,x+9,y+15); ctx.stroke(); }
+    // Bunga kecil yang tersebar
+    if ((tx * 19 + ty * 23) % (activeWorld==='forest'?9:17) === 0) {
+      ctx.fillStyle = "#e9d9a9";
+      ctx.fillRect(x + 10, y + 12, 3, 3);
+      ctx.fillStyle = "#f3e8c6";
+      ctx.fillRect(x + 11, y + 11, 1, 1);
+    }
+  }
+
+  // Semak atau pohon kecil
+  
+  // Semak atau pohon kecil — versi enhanced
+  if (t === 3) {
+    ctx.save();
+
+    // Batasi gambar pohon pada tile 32 × 32
+    ctx.beginPath();
+    ctx.rect(x, y, TS, TS);
+    ctx.clip();
+
+    // Bayangan di tanah
+    ctx.fillStyle = "rgba(15, 35, 24, 0.35)";
+    ctx.beginPath();
+    ctx.ellipse(
+      x + 17, y + 25,
+      13, 5, 0, 0, Math.PI * 2
+    );
+    ctx.fill();
+
+    // Batang pohon
+    ctx.fillStyle = "#65452f";
+    ctx.fillRect(x + 14, y + 13, 7, 15);
+
+    ctx.fillStyle = "#98704a";
+    ctx.fillRect(x + 15, y + 14, 2, 11);
+
+    // Cabang kecil
+    ctx.strokeStyle = "#65452f";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x + 17, y + 18);
+    ctx.lineTo(x + 10, y + 12);
+    ctx.moveTo(x + 18, y + 17);
+    ctx.lineTo(x + 24, y + 11);
+    ctx.stroke();
+
+    // Lapisan daun belakang
+    ctx.fillStyle = "#254b35";
+    ctx.beginPath();
+    ctx.arc(x + 9, y + 14, 6, 0, Math.PI * 2);
+    ctx.arc(x + 23, y + 14, 6, 0, Math.PI * 2);
+    ctx.arc(x + 16, y + 8, 7, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Lapisan daun utama
+    ctx.fillStyle = "#356b43";
+    ctx.beginPath();
+    ctx.arc(x + 10, y + 11, 8, 0, Math.PI * 2);
+    ctx.arc(x + 22, y + 10, 8, 0, Math.PI * 2);
+    ctx.arc(x + 16, y + 5, 9, 0, Math.PI * 2);
+    ctx.arc(x + 17, y + 16, 8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Daun yang terkena cahaya
+    ctx.fillStyle = "#528b50";
+    ctx.beginPath();
+    ctx.arc(x + 9, y + 14, 6, 0, Math.PI * 2);
+    ctx.arc(x + 23, y + 14, 6, 0, Math.PI * 2);
+    ctx.arc(x + 16, y + 8, 7, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Sorotan daun
+    ctx.fillStyle = "#a4cb70";
+    ctx.fillRect(x + 8, y + 6, 3, 2);
+    ctx.fillRect(x + 16, y + 2, 3, 2);
+    ctx.fillRect(x + 22, y + 7, 2, 2);
+
+    // Detail daun gelap
+    ctx.fillStyle = "#244a34";
+    ctx.fillRect(x + 12, y + 13, 3, 2);
+    ctx.fillRect(x + 21, y + 15, 3, 2);
+    
+    ctx.restore();
+  }
+}
+
+
+function drawHouse(h) {
+  const x = h.x * TS - cam.x;
+  const y = h.y * TS - cam.y;
+  const w = h.w * TS;
+  const hh = h.h * TS;
+
+  ctx.save();
+
+  // 1. Bayangan rumah
+  ctx.fillStyle = "rgba(0,0,0,0.28)";
+  ctx.beginPath();
+  ctx.ellipse(
+    x + w / 2, y + hh - 1,
+    w * 0.55, 9, 0, 0, Math.PI * 2
+  );
+  ctx.fill();
+
+  // 2. Cerobong di belakang atap
+  ctx.fillStyle = "#704b3b";
+  ctx.fillRect(x + w * 0.69, y + 1, 13, 29);
+
+  ctx.fillStyle = "#a97857";
+  ctx.fillRect(x + w * 0.67, y, 17, 6);
+
+  ctx.strokeStyle = "#49352d";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(x + w * 0.69, y + 1, 13, 29);
+
+  // 3. Dinding utama
+  ctx.fillStyle = h.color;
+  ctx.fillRect(x + 4, y + 22, w - 8, hh - 22);
+
+  // Bingkai bawah dinding
+  ctx.fillStyle = "#704a35";
+  ctx.fillRect(x + 4, y + hh - 10, w - 8, 8);
+
+  // Tekstur papan kayu
+  ctx.strokeStyle = "rgba(75,43,28,0.45)";
+  ctx.lineWidth = 1;
+
+  for (let sy = y + 31; sy < y + hh - 12; sy += 10) {
+    ctx.beginPath();
+    ctx.moveTo(x + 7, sy);
+    ctx.lineTo(x + w - 7, sy);
+    ctx.stroke();
+  }
+
+  // Balok penyangga vertikal
+  ctx.fillStyle = "#80583c";
+  ctx.fillRect(x + 7, y + 28, 5, hh - 40);
+  ctx.fillRect(x + w - 12, y + 28, 5, hh - 40);
+
+  // 4. Atap utama
+  ctx.beginPath();
+  ctx.moveTo(x - 9, y + 27);
+  ctx.lineTo(x + w / 2, y - 17);
+  ctx.lineTo(x + w + 9, y + 27);
+  ctx.closePath();
+  ctx.fillStyle = h.roof;
+  ctx.fill();
+
+  ctx.strokeStyle = "#49352e";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Garis tepi atap
+  ctx.beginPath();
+  ctx.moveTo(x - 9, y + 27);
+  ctx.lineTo(x + w + 9, y + 27);
+  ctx.strokeStyle = "#d3ad78";
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // Tekstur genteng mengikuti kemiringan atap
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(x - 6, y + 25);
+  ctx.lineTo(x + w / 2, y - 14);
+  ctx.lineTo(x + w + 6, y + 25);
+  ctx.closePath();
+  ctx.clip();
+
+  ctx.strokeStyle = "rgba(65,35,30,0.55)";
+  ctx.lineWidth = 2;
+
+  for (let i = -3; i <= 3; i++) {
+    const t = i / 4;
+
+    ctx.beginPath();
+    ctx.moveTo(
+      x + w / 2 + t * (w / 2 + 8),
+      y - 15 + Math.abs(t) * 42
+    );
+    ctx.lineTo(
+      x + w / 2 + t * (w / 2 + 8) - 7,
+      y - 8 + Math.abs(t) * 42
+    );
+    ctx.stroke();
+  }
+
+  // Garis-garis horizontal genteng
+  for (let sy = y - 5; sy < y + 25; sy += 8) {
+    ctx.beginPath();
+    ctx.moveTo(x + 8, sy);
+    ctx.lineTo(x + w - 8, sy);
+    ctx.stroke();
+  }
+
+  // Kilau lembut di sisi atap
+  ctx.strokeStyle = "rgba(255,220,160,0.25)";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(x + w / 2, y - 13);
+  ctx.lineTo(x + w * 0.25, y + 17);
+  ctx.stroke();
+
+  ctx.restore();
+
+  // 5. Pintu kayu
+  const doorX = x + w * 0.42;
+  const doorY = y + hh - 39;
+  const doorW = Math.max(12, w * 0.17);
+
+  ctx.fillStyle = "#3e2923";
+  ctx.fillRect(doorX - 3, doorY - 3, doorW + 6, 42);
+
+  ctx.fillStyle = "#805137";
+  ctx.fillRect(doorX, doorY, doorW, 39);
+
+  ctx.strokeStyle = "#c1945d";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(doorX, doorY, doorW, 39);
+
+  // Papan-papan pada pintu
+  ctx.strokeStyle = "rgba(45,27,21,0.65)";
+  ctx.lineWidth = 1;
+
+  for (let dx = doorX + 5; dx < doorX + doorW; dx += 7) {
+    ctx.beginPath();
+    ctx.moveTo(dx, doorY + 3);
+    ctx.lineTo(dx, doorY + 36);
+    ctx.stroke();
+  }
+
+  // Gagang pintu
+  ctx.fillStyle = "#e8c47c";
+  ctx.beginPath();
+  ctx.arc(doorX + doorW - 4, doorY + 21, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 6. Jendela dengan bingkai dan cahaya
+  const winY = y + hh - 53;
+  const winSize = 18;
+  const windows = [
+    x + 12,
+    x + w - 30
+  ];
+
+  for (const wx of windows) {
+    // Bayangan bingkai
+    ctx.fillStyle = "#4b3329";
+    ctx.fillRect(wx - 3, winY - 3, 24, 24);
+
+    // Cahaya dari dalam rumah
+    ctx.fillStyle = "#f2c878";
+    ctx.fillRect(wx, winY, winSize, winSize);
+
+    ctx.fillStyle = "#b9d9d4";
+    ctx.fillRect(wx + 3, winY + 3, 12, 12);
+
+    // Refleksi kaca
+    ctx.fillStyle = "rgba(255,255,230,0.65)";
+    ctx.fillRect(wx + 4, winY + 3, 3, 10);
+
+    // Palang jendela
+    ctx.strokeStyle = "#68432e";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(wx, winY, winSize, winSize);
+
+    ctx.beginPath();
+    ctx.moveTo(wx + 9, winY);
+    ctx.lineTo(wx + 9, winY + winSize);
+    ctx.moveTo(wx, winY + 9);
+    ctx.lineTo(wx + winSize, winY + 9);
+    ctx.stroke();
+  }
+
+  // 7. Nama rumah
+  ctx.font = "bold 11px system-ui";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "alphabetic";
+
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "rgba(20,18,17,0.9)";
+  ctx.strokeText(h.name, x + w / 2, y + hh + 13);
+
+  ctx.fillStyle = "#f5e6bd";
+  ctx.fillText(h.name, x + w / 2, y + hh + 13);
+
+  ctx.restore();
+}
+
+function drawObject(o) {
+  const x = o.x * TS - cam.x;
+  const y = o.y * TS - cam.y;
+
+  if (o.type === 'npc' || o.type === 'shop') {
+    // Bayangan karakter
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + 8, 10, 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Warna pakaian
+    let clothes = '#b7c8b4';
+    if (o.name.includes('Mira')) clothes = '#a9c4e7';
+    else if (o.name.includes('Pedagang')) clothes = '#c99b58';
+
+    // Badan
+    ctx.fillStyle = clothes;
+    ctx.fillRect(x - 7, y - 5, 14, 17);
+
+    // Tangan
+    ctx.fillStyle = '#e8c5a5';
+    ctx.fillRect(x - 10, y, 3, 8);
+    ctx.fillRect(x + 7, y, 3, 8);
+
+    // Kepala
+    ctx.fillStyle = '#e8c5a5';
+    ctx.beginPath();
+    ctx.arc(x, y - 11, 7, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Rambut
+    ctx.fillStyle = o.name.includes('Mira') ? '#59443a' : '#46362e';
+    ctx.fillRect(x - 7, y - 16, 14, 5);
+
+    // Mata
+    ctx.fillStyle = '#35271f';
+    ctx.fillRect(x - 4, y - 12, 2, 2);
+    ctx.fillRect(x + 2, y - 12, 2, 2);
+
+    // Penanda pedagang
+    if (o.type === 'shop') {
+      ctx.fillStyle = '#ffe08a';
+      ctx.beginPath();
+      ctx.arc(x, y - 25, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+  } else if (o.type === 'sign') {
+    // Tiang papan
+    ctx.fillStyle = '#6a472e';
+    ctx.fillRect(x - 3, y - 4, 6, 22);
+
+    // Papan kayu
+    ctx.fillStyle = '#c9a46a';
+    ctx.fillRect(x - 14, y - 17, 28, 18);
+
+    ctx.strokeStyle = '#5c422b';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x - 14, y - 17, 28, 18);
+
+    // Serat kayu
+    ctx.strokeStyle = '#987447';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x - 10, y - 11);
+    ctx.lineTo(x + 9, y - 11);
+    ctx.moveTo(x - 8, y - 5);
+    ctx.lineTo(x + 5, y - 5);
+    ctx.stroke();
+
+  } else if (o.type === 'well') {
+    // Bayangan sumur
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + 5, 19, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Dinding batu
+    ctx.fillStyle = '#77766b';
+    ctx.beginPath();
+    ctx.ellipse(x, y, 17, 12, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Batu terang di bibir sumur
+    ctx.strokeStyle = '#c5c2a9';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.ellipse(x, y, 14, 9, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Air sumur
+    ctx.fillStyle = '#244754';
+    ctx.beginPath();
+    ctx.ellipse(x, y, 10, 6, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Pantulan air
+    ctx.strokeStyle = '#82c5cb';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x - 5, y - 1);
+    ctx.lineTo(x + 3, y - 2);
+    ctx.stroke();
+  }
+}
+
+function drawMapMonster(m){if(!m.alive)return;const x=m.x*TS-cam.x,y=m.y*TS-cam.y;const pulse=2+Math.sin(performance.now()/180)*2;ctx.fillStyle='rgba(35,18,45,0.35)';ctx.beginPath();ctx.ellipse(x,y+8,13,6,0,0,Math.PI*2);ctx.fill();ctx.font='27px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(m.emoji,x,y-3-pulse);ctx.font='10px Arial';ctx.lineWidth=3;ctx.strokeStyle='#1e2924';ctx.strokeText(m.name,x,y-24);ctx.fillStyle='#f4e8d0';ctx.fillText(m.name,x,y-24);ctx.textAlign='start';ctx.textBaseline='alphabetic'}
+const kaelSpriteFrames = { idle: [], walk: [] };
+const KAEL_FRAME_COUNT = { idle: 6, walk: 8 };
+const KAEL_ASPECT = 190 / 328; // lebar/tinggi frame, agar sprite tidak gepeng
+for (const state of ['idle', 'walk']) {
+  for (let i = 0; i < KAEL_FRAME_COUNT[state]; i++) {
+    const image = new Image();
+    image.src = `assets/kael_sprites/${state}_${i}.png`;
+    kaelSpriteFrames[state].push(image);
+  }
+}
+let kaelWalkClock = 0, kaelLastX = null, kaelLastY = null;
+function drawPlayer(){
+ // Kael memakai frame sprite hasil olahan: walk 8 frame (kaki bergantian + badan turun saat menapak), idle 6 frame (napas halus).
+ const x=player.x*TS-cam.x, y=player.y*TS-cam.y;
+ const moving = Math.hypot(joy.x, joy.y) > 0.08 || !!tapTarget || !!keys.ArrowRight || !!keys.ArrowLeft || !!keys.ArrowUp || !!keys.ArrowDown || !!keys.w || !!keys.a || !!keys.s || !!keys.d;
+ // Langkah mengikuti jarak tempuh nyata supaya kaki tidak "meluncur" saat lambat/cepat.
+ let moved = 0;
+ if(kaelLastX!==null) moved = Math.hypot(player.x-kaelLastX, player.y-kaelLastY);
+ kaelLastX=player.x; kaelLastY=player.y;
+ let frame;
+ if(moving && moved > 0.0005){
+   kaelWalkClock += moved;
+   const n=kaelSpriteFrames.walk.length;
+   frame = kaelSpriteFrames.walk[Math.floor(kaelWalkClock/0.45) % n]; // 0.45 tile per frame (~9 fps pada kecepatan normal 4.15 tile/s)
+ } else if(moving){
+   frame = kaelSpriteFrames.walk[0]; // menekan tombol tapi tertahan (tabrakan): pose berdiri
+ } else {
+   kaelWalkClock = 0;
+   frame = kaelSpriteFrames.idle[Math.floor(performance.now()/260) % kaelSpriteFrames.idle.length];
+ }
+ ctx.save();
+ if(frame && frame.complete && frame.naturalWidth){
+   const h=activeWorld==='interior'?66:78, w=h*KAEL_ASPECT, dx=-w/2, dy=-h+10; // rasio asli dipertahankan, kaki tertumpu di titik player
+   ctx.imageSmoothingEnabled = true;
+   ctx.imageSmoothingQuality = 'high';
+   ctx.translate(x, y);
+   if(player.dir==='left') ctx.scale(-1,1);
+   ctx.drawImage(frame,dx,dy,w,h);
+ } else {
+   // Fallback ringan jika file sprite belum selesai dimuat.
+   ctx.fillStyle='#14223a';ctx.beginPath();ctx.ellipse(x,y-15,8,12,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle='#315b8b';ctx.fillRect(x-8,y-8,16,20);
+ }
+ ctx.restore();
+}
+
+function nearest(){let best=null,dist=1.65;for(const o of objects){const d=Math.hypot(o.x-player.x,o.y-player.y);if(d<dist){best=o;dist=d}}for(const h of houses){const x=Math.max(h.x,Math.min(player.x,h.x+h.w)),y=Math.max(h.y,Math.min(player.y,h.y+h.h));const d=Math.hypot(player.x-x,player.y-y);if(d<dist){best={type:'house',house:h,name:h.name,title:h.name,text:`${h.name}. Bangunan ini menjadi bagian dari kehidupan warga desa. Fitur masuk bangunan akan ditambahkan pada tahap berikutnya.`};dist=d}}return best}
+
+// ===== INTERIOR BANGUNAN =====
+const INTERIORS={
+ 'Penginapan':{title:'PENGINAPAN VEYRA',floor:'#a4764b',floor2:'#97693f',wall:'#7a5640',rug:'#8b2f3f',bed:'#6fa0cf',
+  rows:['############','#ss.....pff#','#......ccc.#','#..........#','#bb.rrrr.bb#','#bb.rrrr.bb#','#..........#','#p........p#','#####DD#####'],
+  npcs:[{x:8.5,y:1.5,type:'npc',act:'inn',name:'Bu Sera, pemilik penginapan',title:'Bu Sera'}]},
+ 'Toko Desa':{title:'TOKO DESA',floor:'#b59a64',floor2:'#a98d58',wall:'#7b6044',rug:'#2f5f8b',bed:'#6fa0cf',
+  rows:['############','#ssssssss..#','#..........#','#...cccccc.#','#..........#','#xx......xx#','#x...rr...x#','#p........p#','#####DD#####'],
+  npcs:[{x:6.5,y:2.5,type:'npc',act:'shop',name:'Pedagang Toko',title:'Pedagang Toko'}]},
+ 'Rumah Tetua':{title:'RUMAH TETUA',floor:'#9a6b48',floor2:'#8d5f3e',wall:'#6f4a3d',rug:'#6b3f7a',bed:'#c98a6a',
+  rows:['############','#ssss...pff#','#..........#','#....tt....#','#..rrrrrr..#','#..rrrrrr..#','#.bb....bb.#','#p........p#','#####DD#####'],
+  npcs:[{x:6.5,y:2.5,type:'npc',act:'elder',name:'Tetua Aldren',title:'Tetua Aldren'}]},
+ 'Rumah Lyria':{title:'RUMAH LYRIA',floor:'#a9835a',floor2:'#9c774f',wall:'#5f6f80',rug:'#3f7a5b',bed:'#d99ab0',
+  rows:['############','#pp.sss.bb.#','#.......bb.#','#..........#','#..xx.rrrr.#','#..xx.rrrr.#','#..........#','#p........p#','#####DD#####'],
+  npcs:[{x:2.5,y:4.5,type:'npc',act:'lyria',name:'Lyria',title:'Lyria'}]},
+ 'Gudang':{title:'GUDANG',floor:'#8f7655',floor2:'#836a4b',wall:'#5d4a3c',rug:'#555',bed:'#888',
+  rows:['############','#xxx..xxxxx#','#xxx....xxx#','#..........#','#.xx....C..#','#.xx...xx..#','#..........#','#x........x#','#####DD#####'],
+  npcs:[{x:8.5,y:4.5,type:'chest',act:'chest',name:'Peti Kayu',title:'Peti Kayu'}]}
+};
+const INN_PRICE=20;
+function buildInterior(name,house){
+ const def=INTERIORS[name]||INTERIORS['Gudang'];
+ const rows=def.rows,h=rows.length,w=rows[0].length;
+ const map=rows.map(r=>[...r].map(c=>c==='#'?1:('sbcxtfpC'.includes(c)?4:0)));
+ return{name,def,w,h,rows,map,doorX:6.0,npcs:def.npcs.map(n=>({...n})),house};
+}
+function enterBuilding(houseName,house){
+ interior=buildInterior(houseName,house);
+ activeWorld='interior';player.x=interior.doorX;player.y=interior.h-1.8;player.dir='up';
+ tapTarget=null;pendingTapInteract=false;fade.a=1;fade.text='';
+ document.getElementById('dialog').classList.remove('show');
+ saveGame(true);
+}
+function exitBuilding(){
+ const hs=interior.house;
+ activeWorld='village';player.x=hs?hs.x+hs.w/2:20;player.y=hs?hs.y+hs.h+0.8:18;player.dir='down';
+ interior=null;tapTarget=null;pendingTapInteract=false;fade.a=1;fade.text='';
+ showToast('Kamu keluar ke Desa Veyra.');saveGame(true);
+}
+function showDialog(title,text){
+ document.getElementById('dialogTitle').textContent=title;document.getElementById('dialogText').textContent=text;
+ document.getElementById('dialog').classList.add('show');updateQuestHUD();
+}
+function interiorNearest(){
+ let best=null,dist=2.1;
+ for(const n of interior.npcs){const d=Math.hypot(n.x-player.x,n.y-player.y);if(d<dist){best=n;dist=d}}
+ return best;
+}
+function openInn(){
+ const full=playerStats.hp>=playerStats.maxHp&&playerStats.mp>=playerStats.maxMp;
+ modal('Penginapan Veyra','<p>Bu Sera: "Selamat datang, Kael. Kamar hangat, sup panas, dan tidur nyenyak. Semalam '+INN_PRICE+' Gil."</p><p>Gil: '+gameState.gold+' · HP '+playerStats.hp+'/'+playerStats.maxHp+' · MP '+playerStats.mp+'/'+playerStats.maxMp+'</p><div class=modal-actions><button id=innRest>Menginap ('+INN_PRICE+' Gil)</button><button id=innNo>Nanti saja</button></div>');
+ document.getElementById('innNo').onclick=closeModal;
+ document.getElementById('innRest').onclick=()=>{
+  if(full){showToast('Kamu masih segar bugar. Tidak perlu menginap.');closeModal();return}
+  if(gameState.gold<INN_PRICE){showToast('Gil tidak cukup untuk menginap.');return}
+  gameState.gold-=INN_PRICE;playerStats.hp=playerStats.maxHp;playerStats.mp=playerStats.maxMp;
+  closeModal();fade.a=1.7;fade.text='Kamu tidur nyenyak. HP dan MP pulih sepenuhnya.';
+  saveGame(true);if(typeof updateInventoryHUD==='function')updateInventoryHUD();
+ };
+}
+function interiorInteract(){
+ const n=interiorNearest();
+ if(!n){if(player.y>=interior.h-2.6&&Math.abs(player.x-interior.doorX)<2.2){exitBuilding();return}showToast('Tidak ada yang bisa diajak bicara di dekatmu. Pintu keluar ada di bawah.');return}
+ if(n.act==='inn'){openInn();return}
+ if(n.act==='shop'){openShop();return}
+ if(n.act==='chest'){
+  gameState.flags=gameState.flags||{};
+  if(gameState.flags.gudangChest){showDialog('Peti Kayu','Peti ini sudah kosong.');return}
+  gameState.flags.gudangChest=true;gameState.gold+=40;gameState.items.potion=(gameState.items.potion||0)+2;
+  showDialog('Peti Kayu','Kamu menemukan 40 Gil dan 2 Ramuan HP di dalam peti!');saveGame(true);if(typeof updateInventoryHUD==='function')updateInventoryHUD();return;
+ }
+ if(n.act==='elder'){
+  const t=quest.status==='belum'?'Kael, kau datang tepat waktu. Gema aneh terdengar dari utara dan sumur tua. Temui Mira di dekat jalan desa, dia mendengar lebih banyak.'
+   :quest.status==='aktif'?'Sumur Tua itu kuncinya. Periksalah dengan hati-hati, dan jangan lupa bawa ramuan.'
+   :'Kau sudah memeriksa sumur itu. Gema tersebut bukan kebetulan. Hutan Berbisik menyimpan lebih banyak jawaban.';
+  showDialog(n.title,t);return;
+ }
+ if(n.act==='lyria'){
+  showDialog(n.title,'Aku meracik ramuan di sini. Kalau HP-mu tinggal sedikit, menginaplah di Penginapan sebelum masuk hutan. Tidur semalam lebih murah daripada menyesal.');return;
+ }
+}
+function drawFade(dt){
+ if(fade.a<=0)return;
+ const a=Math.min(1,fade.a);ctx.save();ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='rgba(6,8,16,'+a+')';ctx.fillRect(0,0,W,H);
+ if(fade.text&&fade.a>0.35){ctx.fillStyle='rgba(235,245,255,'+Math.min(1,fade.a)+')';ctx.font='600 15px system-ui';ctx.textAlign='center';ctx.fillText(fade.text,W/2,H/2);}
+ ctx.restore();
+ fade.a-=dt/(fade.text?900:320);if(fade.a<0)fade.a=0;
+}
+function renderInterior(){
+ const I=interior,def=I.def,t=performance.now()/1000;
+ ctx.fillStyle='#0d0a10';ctx.fillRect(0,0,W/Zm,H/Zm);
+ for(let y=0;y<I.h;y++)for(let x=0;x<I.w;x++){
+  const c=I.rows[y][x],sx=x*TS-cam.x,sy=y*TS-cam.y;
+  if(c==='#'){
+   if(y===0||y===I.h-1||x===0||x===I.w-1){
+    ctx.fillStyle=def.wall;ctx.fillRect(sx,sy,TS,TS);
+    ctx.fillStyle='rgba(0,0,0,.25)';ctx.fillRect(sx,sy+TS-6,TS,6);
+    ctx.fillStyle='rgba(255,255,255,.07)';ctx.fillRect(sx,sy,TS,3);
+    if(y===0&&(x===4||x===9)){ctx.fillStyle='#4a2f22';ctx.fillRect(sx+4,sy+4,TS-8,TS-10);ctx.fillStyle='#9fd6f0';ctx.fillRect(sx+6,sy+6,TS-12,TS-14);ctx.fillStyle='#4a2f22';ctx.fillRect(sx+TS/2-1,sy+6,2,TS-14);}
+   }
+   continue;
+  }
+  ctx.fillStyle=((x+y)%2)?def.floor:def.floor2;ctx.fillRect(sx,sy,TS,TS);
+  ctx.fillStyle='rgba(0,0,0,.12)';ctx.fillRect(sx,sy+TS/2,TS,1);ctx.fillRect(sx,sy,TS,1);
+  if(c==='D'){ctx.fillStyle='#5b3b27';ctx.fillRect(sx,sy,TS,TS);ctx.fillStyle='#caa05e';ctx.fillRect(sx+3,sy+TS-8,TS-6,6);ctx.fillStyle='rgba(255,230,160,.25)';ctx.fillRect(sx,sy,TS,TS);}
+  if(c==='r'){ctx.fillStyle=def.rug;ctx.fillRect(sx,sy,TS,TS);ctx.fillStyle='rgba(255,255,255,.14)';ctx.fillRect(sx+3,sy+3,TS-6,TS-6);ctx.fillStyle=def.rug;ctx.fillRect(sx+6,sy+6,TS-12,TS-12);}
+ }
+ // Perabot (urut baris agar tumpukan terlihat benar)
+ for(let y=0;y<I.h;y++)for(let x=0;x<I.w;x++){
+  const c=I.rows[y][x],sx=x*TS-cam.x,sy=y*TS-cam.y;
+  if(c==='s'){ctx.fillStyle='#5a3a26';ctx.fillRect(sx+1,sy+2,TS-2,TS-3);ctx.fillStyle='#3d281b';ctx.fillRect(sx+3,sy+5,TS-6,TS-10);
+   const cols=['#d85a6a','#e8c456','#5aa0d8','#7ad88a','#b07ad8'];for(let i=0;i<4;i++){ctx.fillStyle=cols[(x*3+i+y)%5];ctx.fillRect(sx+5+i*6,sy+7,4,8);ctx.fillStyle=cols[(x+i*2)%5];ctx.fillRect(sx+5+i*6,sy+18,4,7);}
+   ctx.fillStyle='#5a3a26';ctx.fillRect(sx+3,sy+16,TS-6,2);}
+  else if(c==='b'){const top=I.rows[y-1]&&I.rows[y-1][x]==='b';ctx.fillStyle='#5a3a26';ctx.fillRect(sx+1,sy+1,TS-2,TS-2);ctx.fillStyle=def.bed;ctx.fillRect(sx+3,sy+(top?0:5),TS-6,TS-(top?4:8));if(!top){ctx.fillStyle='#f2f2f5';ctx.fillRect(sx+5,sy+6,TS-10,9);}ctx.fillStyle='rgba(0,0,0,.15)';ctx.fillRect(sx+3,sy+TS-5,TS-6,3);}
+  else if(c==='c'){ctx.fillStyle='#4e311f';ctx.fillRect(sx,sy+8,TS,TS-8);ctx.fillStyle='#b88555';ctx.fillRect(sx,sy+4,TS,8);ctx.fillStyle='rgba(255,255,255,.18)';ctx.fillRect(sx,sy+4,TS,2);}
+  else if(c==='t'){ctx.fillStyle='#4e311f';ctx.fillRect(sx+3,sy+14,4,16);ctx.fillRect(sx+TS-7,sy+14,4,16);ctx.fillStyle='#a8774a';ctx.fillRect(sx,sy+6,TS,12);ctx.fillStyle='rgba(255,255,255,.18)';ctx.fillRect(sx,sy+6,TS,2);}
+  else if(c==='x'){ctx.fillStyle='#8a6338';ctx.fillRect(sx+2,sy+4,TS-4,TS-6);ctx.strokeStyle='#4e311f';ctx.lineWidth=2;ctx.strokeRect(sx+2,sy+4,TS-4,TS-6);ctx.beginPath();ctx.moveTo(sx+2,sy+4);ctx.lineTo(sx+TS-2,sy+TS-2);ctx.moveTo(sx+TS-2,sy+4);ctx.lineTo(sx+2,sy+TS-2);ctx.stroke();}
+  else if(c==='p'){ctx.fillStyle='#8a4a30';ctx.fillRect(sx+9,sy+18,14,11);ctx.fillStyle='#3f8a4f';ctx.beginPath();ctx.arc(sx+16,sy+14,9,0,Math.PI*2);ctx.fill();ctx.fillStyle='#58b36a';ctx.beginPath();ctx.arc(sx+12,sy+11,5,0,Math.PI*2);ctx.arc(sx+20,sy+12,5,0,Math.PI*2);ctx.fill();}
+  else if(c==='f'){ctx.fillStyle='#6a6a70';ctx.fillRect(sx,sy+1,TS,TS-1);ctx.fillStyle='#2a2024';ctx.fillRect(sx+5,sy+8,TS-10,TS-9);const fl=Math.sin(t*9+x)*2;ctx.fillStyle='#ff9a3c';ctx.beginPath();ctx.moveTo(sx+9,sy+TS-2);ctx.lineTo(sx+16,sy+13+fl);ctx.lineTo(sx+23,sy+TS-2);ctx.closePath();ctx.fill();ctx.fillStyle='#ffe27a';ctx.beginPath();ctx.moveTo(sx+13,sy+TS-2);ctx.lineTo(sx+16,sy+20+fl);ctx.lineTo(sx+19,sy+TS-2);ctx.closePath();ctx.fill();}
+  else if(c==='C'){const open=gameState.flags&&gameState.flags.gudangChest;ctx.fillStyle='#6b4325';ctx.fillRect(sx+3,sy+12,TS-6,TS-14);ctx.fillStyle=open?'#2a1a10':'#8a5a33';ctx.fillRect(sx+3,sy+(open?6:8),TS-6,open?6:7);ctx.fillStyle='#e8c456';ctx.fillRect(sx+TS/2-3,sy+14,6,7);ctx.strokeStyle='#3a2414';ctx.lineWidth=2;ctx.strokeRect(sx+3,sy+12,TS-6,TS-14);}
+ }
+ // Pemain dan NPC diurutkan menurut y
+ const ents=[...I.npcs.filter(n=>n.type==='npc').map(n=>({y:n.y,draw:()=>drawObject(n)})),{y:player.y,draw:drawPlayer}].sort((a,b)=>a.y-b.y);
+ ents.forEach(e=>e.draw());
+ {const dx0=interior.doorX*TS-cam.x,dy0=(I.h-1)*TS-cam.y-6+Math.sin(t*4)*2;ctx.save();ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.lineWidth=3;ctx.strokeStyle='#102333';ctx.strokeText('▼ KELUAR',dx0,dy0);ctx.fillStyle='#fff0a7';ctx.fillText('▼ KELUAR',dx0,dy0);ctx.restore();}
+ // Cahaya hangat dan vinyet
+ const fireTiles=[];for(let x=0;x<I.w;x++)if(I.rows[1][x]==='f')fireTiles.push(x);
+ if(fireTiles.length){const fx=(fireTiles[0]+1)*TS-cam.x,fy=1.5*TS-cam.y,g=ctx.createRadialGradient(fx,fy,8,fx,fy,180+Math.sin(t*7)*8);g.addColorStop(0,'rgba(255,170,70,.28)');g.addColorStop(1,'rgba(255,120,40,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W/Zm,H/Zm);}
+ const cx=I.w*TS/2-cam.x,cy=I.h*TS/2-cam.y,v=ctx.createRadialGradient(cx,cy,60,cx,cy,Math.max(I.w,I.h)*TS*.75);v.addColorStop(0,'rgba(0,0,10,0)');v.addColorStop(1,'rgba(0,0,10,.42)');ctx.fillStyle=v;ctx.fillRect(0,0,W/Zm,H/Zm);
+}
+
+function updateWorldCamera(){
+ const desktop=W>=900&&H>=480,fit=Math.min(W/(MW*TS),H/(MH*TS)),auto=camMode==='auto'&&desktop;
+ Zw=auto?Math.max(.3,fit):1;VW=W/Zw;VH=H/Zw;
+ if(auto){cam.x=MW*TS/2-VW/2;cam.y=MH*TS/2-VH/2}
+ else{cam.x=player.x*TS-VW/2;cam.y=player.y*TS-VH/2}
+}
+function toggleCam(){camMode=camMode==='auto'?'follow':'auto';try{localStorage.setItem('veyra-cam',camMode)}catch(e){}showToast(camMode==='auto'?'Kamera: pas layar (seluruh peta terlihat di browser)':'Kamera: ikuti pemain')}
+function interact() {
+  if(activeWorld==='interior'){interiorInteract();return;}
+  if(activeWorld==='forest'){showToast('Hutan sunyi... terus jelajahi untuk menemukan musuh.');return;}
+  const o = nearest();
+
+  if (o && o.type === 'house' && INTERIORS[o.name]) { enterBuilding(o.name, o.house); return; }
+
+  if (o && o.type === 'shop') {
+    openShop();
+    return;
+  }
+
+  if (!o) {
+    showToast('Tidak ada yang bisa diajak bicara di dekatmu.');
+    return;
+  }
+
+  // Mira memberikan misi
+  if (o.name.includes('Mira')) {
+    if (quest.status === 'belum') {
+      startQuest();
+      o.text = 'Aku mendengar gema aneh dari Sumur Tua. Bisakah kamu memeriksanya? Misi diterima!';
+    } else if (quest.status === 'aktif') {
+      o.text = 'Tolong periksa Sumur Tua itu. Aku merasa ada sesuatu yang tidak beres.';
+    } else if (quest.status === 'selesai') {
+      o.text = 'Terima kasih sudah memeriksa sumur itu. Gema misterius tersebut pasti menyimpan rahasia.';
+    }
+  }
+
+  // Sumur Tua menyelesaikan misi
+  if (o.type === 'well') {
+    if (quest.status === 'aktif') {
+      completeQuest();
+      o.text = 'Kamu memeriksa air sumur. Sebuah gema misterius terdengar dari kedalaman! Misi selesai!';
+    } else if (quest.status === 'belum') {
+      o.text = 'Sumur tua ini mengeluarkan gema aneh. Mungkin Mira mengetahui sesuatu.';
+    } else {
+      o.text = 'Gema misterius masih terdengar dari dasar sumur.';
+    }
+  }
+
+  document.getElementById('dialogTitle').textContent = o.title;
+  document.getElementById('dialogText').textContent = o.text;
+  document.getElementById('dialog').classList.add('show');
+  document.getElementById('hint').textContent =
+    'Tekan INTERAKSI lagi untuk melanjutkan eksplorasi';
+  document.getElementById('hint').textContent =
+  'Tekan INTERAKSI lagi untuk melanjutkan eksplorasi';
+  updateQuestHUD();
+}
+
+// Sentuh/klik peta untuk berjalan langsung; NPC dan bangunan bisa dipilih tanpa tombol Interaksi.
+function setTapDestination(screenX,screenY){
+  const zs=activeWorld==='interior'?Zm:Zw;
+  touchMarker={x:(screenX/zs+cam.x)/TS,y:(screenY/zs+cam.y)/TS,until:performance.now()+1100};
+  if(document.getElementById('modal').classList.contains('show')) return;
+  if(document.getElementById('dialog').classList.contains('show')) document.getElementById('dialog').classList.remove('show');
+  const wx=(screenX/zs+cam.x)/TS, wy=(screenY/zs+cam.y)/TS;
+  if(activeWorld==='interior'&&interior){
+    touchMarker=null;
+    if(wy>=interior.h-1.4&&Math.abs(wx-interior.doorX)<1.6){tapTarget={x:interior.doorX,y:interior.h-0.6};pendingTapInteract=false;return;}
+    let nn=null,bd=1.3;for(const n of interior.npcs){const d=Math.hypot(wx-n.x,wy-n.y);if(d<bd){nn=n;bd=d}}
+    if(nn){if(Math.hypot(player.x-nn.x,player.y-nn.y)<2.0){interact();return;}const vx=player.x-nn.x,vy=player.y-nn.y,vm=Math.hypot(vx,vy)||1;tapTarget={x:nn.x+vx/vm*1.4,y:nn.y+vy/vm*1.4};pendingTapInteract=true;return;}
+    if(!blocked(wx,wy)){tapTarget={x:wx,y:wy};pendingTapInteract=false;}
+    return;
+  }
+  // Gerbang hutan bisa disentuh langsung meski penandanya kecil.
+  if(activeWorld==='village' && wx>=33.8 && wx<=38.5 && wy>=7.2 && wy<=14){
+    tapTarget={x:36.15,y:10.5}; pendingTapInteract=false; showToast('Berjalan menuju gerbang Hutan Berbisik…'); return;
+  }
+  if(activeWorld==='forest' && wx<=5.5 && wy>=13 && wy<=19.5){
+    tapTarget={x:2.55,y:16.5}; pendingTapInteract=false; showToast('Berjalan menuju jalan pulang…'); return;
+  }
+  let chosen=null, best=1.15;
+  if(activeWorld==='village'){
+    for(const o of objects){const d=Math.hypot(wx-o.x,wy-o.y);if(d<best){chosen={kind:'object',item:o};best=d;}}
+    for(const h of houses){if(wx>=h.x-0.5&&wx<=h.x+h.w+0.5&&wy>=h.y-0.7&&wy<=h.y+h.h+0.7){const cx=(h.x+h.w/2),cy=h.y+h.h+0.85;const d=Math.hypot(wx-cx,wy-cy);if(!chosen||best>0.9){chosen={kind:'house',item:h};best=d;}}}
+  }
+  if(chosen){
+    let tx,ty;
+    if(chosen.kind==='object'){
+      const o=chosen.item, vx=player.x-o.x,vy=player.y-o.y,vm=Math.hypot(vx,vy)||1;
+      tx=o.x+vx/vm*0.85;ty=o.y+vy/vm*0.85;
+      if(Math.hypot(player.x-o.x,player.y-o.y)<0.95){interact();return;}
+    } else {const h=chosen.item;tx=h.x+h.w/2;ty=h.y+h.h+0.8;}
+    tapTarget={x:tx,y:ty};pendingTapInteract=true;showToast('Mendekati '+(chosen.kind==='object'?chosen.item.name:chosen.item.name)+'…');return;
+  }
+  tapTarget={x:Math.max(1.5,Math.min(MW-1.5,wx)),y:Math.max(1.5,Math.min(MH-1.5,wy))};pendingTapInteract=false;
+}
+canvas.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;setTapDestination(e.clientX,e.clientY);});
+
+function modal(title,html){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=html;document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}let suppressAutosave=false;
+function buildSave(){const inI=activeWorld==='interior'&&interior&&interior.house;const hs=inI?interior.house:null;return{v:2,savedAt:Date.now(),player:inI?{x:hs.x+hs.w/2,y:hs.y+hs.h+0.8,dir:'down'}:{x:player.x,y:player.y,dir:player.dir},world:inI?'village':activeWorld,gameState,playerProgress,playerStats,quest,mapMonsters:mapMonsters.map(m=>({name:m.name,alive:m.alive}))}}
+function saveGame(silent){if(suppressAutosave)return false;try{localStorage.setItem('veyra-save-v1',JSON.stringify(buildSave()));if(!silent)showToast('Permainan tersimpan: level, quest, item, dan monster yang dikalahkan.');return true}catch(e){if(!silent)showToast('Gagal menyimpan. Penyimpanan browser penuh atau diblokir.');return false}}
+function saveInfo(){try{const d=JSON.parse(localStorage.getItem('veyra-save-v1'));if(!d)return'Belum ada simpanan.';const t=d.savedAt?new Date(d.savedAt).toLocaleString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'waktu tidak diketahui';return'Simpanan terakhir: '+t+' · Lv.'+((d.playerProgress&&d.playerProgress.level)||1)}catch(e){return'Belum ada simpanan.'}}
+function newGame(){modal('Game Baru','<p>Semua progres (level, item, quest, monster) akan dihapus dan permainan dimulai dari awal. Lanjutkan?</p><div class=modal-actions><button id=ngYes>Ya, mulai baru</button><button id=ngNo>Batal</button></div>');document.getElementById('ngNo').onclick=closeModal;document.getElementById('ngYes').onclick=()=>{suppressAutosave=true;['veyra-save-v1','veyra-battle-result','veyra-pending-encounter','veyra-battle-player-stats','veyra-return-world','veyra-last-battle'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});location.href=location.pathname}}
+function loadGame(silent=false){try{const d=JSON.parse(localStorage.getItem('veyra-save-v1'));if(!d)throw Error();Object.assign(player,d.player);if(d.world)activeWorld=d.world;Object.assign(gameState,d.gameState);if(d.playerProgress)Object.assign(playerProgress,d.playerProgress);if(d.playerStats)Object.assign(playerStats,d.playerStats);if(d.quest)Object.assign(quest,d.quest);if(d.mapMonsters)for(const saved of d.mapMonsters){const m=mapMonsters.find(v=>v.name===saved.name);if(m)m.alive=saved.alive}updateProgressHUD();updateInventoryHUD();showToast('Permainan berhasil dimuat.')}catch(e){if(!silent)showToast('Belum ada simpanan yang valid.')}}function inventory(){modal('Inventaris','<p>Level: '+playerProgress.level+' · EXP: '+playerProgress.exp+'/'+playerProgress.nextLevelExp+'</p><p>HP: '+playerStats.hp+'/'+playerStats.maxHp+' · MP: '+playerStats.mp+'/'+playerStats.maxMp+'</p><p>Gil: '+gameState.gold+'</p>'+Object.keys(itemData).map(id=>'<div class=item-row><span><b>'+itemData[id].name+'</b><br>Jumlah: '+gameState.items[id]+'</span><button data-use='+id+'>Gunakan</button></div>').join(''));document.querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>{let id=b.dataset.use;if(gameState.items[id]>0){if(id==='potion'){if(playerStats.hp>=playerStats.maxHp){showToast('HP masih penuh!');return}gameState.items[id]--;playerStats.hp=Math.min(playerStats.maxHp,playerStats.hp+30);showToast('Ramuan memulihkan 30 HP.')}else{if(playerStats.mp>=playerStats.maxMp){showToast('MP masih penuh!');return}gameState.items[id]--;playerStats.mp=Math.min(playerStats.maxMp,playerStats.mp+15);showToast('Ether memulihkan 15 MP.')}updateInventoryHUD();inventory()}})}function openShop(){modal('Toko Desa','<p>Gil: '+gameState.gold+'</p>'+Object.keys(itemData).map(id=>'<div class=item-row><span><b>'+itemData[id].name+'</b><br>'+itemData[id].desc+'<br>'+itemData[id].price+' Gil</span><button data-buy='+id+'>Beli</button></div>').join(''));document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{let id=b.dataset.buy,it=itemData[id];if(gameState.gold<it.price){showToast('Gil tidak cukup.');return}gameState.gold-=it.price;gameState.items[id]++;openShop()})}let battleState = null;
+function startBattle(){
+ if(activeWorld!=='forest')return;
+ const level=playerProgress.level||1,roll=Math.random()*100;
+ const chosen=roll<42?{id:'pipit',name:'Pipit Hitam',exp:22,gold:12,potion:0}:roll<78?{id:'goblin',name:'Forest Goblin',exp:32,gold:18,potion:0}:{id:'darkmage',name:'Mist Wisp',exp:45,gold:25,potion:1};
+ const encounter={...chosen,level,world:'Hutan Berbisik',reward:{exp:chosen.exp,gold:chosen.gold,potion:chosen.potion}};
+ saveGame(true);localStorage.setItem('veyra-battle-player-stats',JSON.stringify({hp:playerStats.hp,maxHp:playerStats.maxHp,mp:playerStats.mp,maxMp:playerStats.maxMp,atk:playerStats.atk,def:playerStats.def,matk:playerStats.matk,mdef:playerStats.mdef,level:playerProgress.level,items:gameState.items}));localStorage.setItem('veyra-return-world',activeWorld);
+ localStorage.setItem('veyra-pending-encounter',JSON.stringify(encounter));
+ location.href='battle.html?encounter=random';
+}
+function openParty(){modal('Party','<p>Anggota party yang tersedia saat ini.</p><div class=modal-actions><button id=partyKael>Kael · Lv.'+playerProgress.level+'</button></div>');document.getElementById('partyKael').onclick=openKaelStatus;}
+function openKaelStatus(){modal('Status — Kael','<div class=item-row><span><b>Kael</b><br>Veilblade · Level '+playerProgress.level+'<br>EXP: '+playerProgress.exp+'/'+playerProgress.nextLevelExp+'</span></div><div class=item-row><span><b>HP</b><br>'+playerStats.hp+' / '+playerStats.maxHp+'</span><span><b>MP</b><br>'+playerStats.mp+' / '+playerStats.maxMp+'</span></div><div class=item-row><span><b>ATK</b> '+playerStats.atk+'<br><b>DEF</b> '+playerStats.def+'</span><span><b>MATK</b> '+playerStats.matk+'<br><b>MDEF</b> '+playerStats.mdef+'</span></div><p>Kael adalah satu-satunya anggota party yang tersedia saat ini. Anggota lain akan terbuka melalui cerita.</p><div class=modal-actions><button id=backParty>Kembali ke Party</button></div>');document.getElementById('backParty').onclick=openParty;}
+function openMenu(){modal('Menu Desa Veyra','<p>Kelola petualangan Kael, periksa statusnya, dan siapkan perjalanan ke Hutan Berbisik.</p><p style="opacity:.7;font-size:12px">'+saveInfo()+' · Autosave aktif · Versi 5.5</p><div class=modal-actions><button id=mParty>Party</button><button id=mInv>Inventaris</button><button id=mShop>Toko</button><button id=mSave>Simpan</button><button id=mLoad>Muat</button><button id=mBattle>Latihan Battle</button><button id=mRest>Istirahat</button><button id=mNew>Game Baru</button><button id=mCam>Kamera: '+(camMode==='auto'?'Pas layar':'Ikuti pemain')+'</button></div>');document.getElementById('mNew').onclick=newGame;document.getElementById('mCam').onclick=()=>{toggleCam();closeModal()};document.getElementById('mParty').onclick=openParty;document.getElementById('mInv').onclick=inventory;document.getElementById('mShop').onclick=openShop;document.getElementById('mSave').onclick=()=>{saveGame();closeModal()};document.getElementById('mLoad').onclick=()=>{loadGame();closeModal()};document.getElementById('mBattle').onclick=()=>{closeModal();if(activeWorld!=='forest'){showToast('Masuki Hutan Berbisik dahulu melalui gerbang timur-laut.');return}startBattle()};document.getElementById('mRest').onclick=()=>{showToast('Istirahat dicatat.');closeModal()}}function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');lastToast=performance.now()}
+function update(dt){if(battleState)return;let dx=joy.x+(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0),dy=joy.y+(keys.ArrowDown||keys.s?1:0)-(keys.ArrowUp||keys.w?1:0);if(Math.hypot(dx,dy)<0.08&&tapTarget){const tx=tapTarget.x-player.x,ty=tapTarget.y-player.y,td=Math.hypot(tx,ty);if(td<0.22){tapTarget=null;if(pendingTapInteract){pendingTapInteract=false;interact();}}else{dx=tx/td;dy=ty/td;}}else if(Math.hypot(dx,dy)>=0.08){tapTarget=null;pendingTapInteract=false;}const mag=Math.hypot(dx,dy);if(mag>1){dx/=mag;dy/=mag}if(mag>.08){player.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up');const step=player.speed*dt/1000;const nx=player.x+dx*step,ny=player.y+dy*step;let mv=false;if(!blocked(nx,player.y)){player.x=nx;mv=true}if(!blocked(player.x,ny)){player.y=ny;mv=true}if(!mv&&tapTarget&&pendingTapInteract){const nn=activeWorld==='interior'?(interior&&interiorNearest()):nearest();if(nn){tapTarget=null;pendingTapInteract=false;interact()}}document.getElementById('dialog').classList.remove('show')}
+if(portalCooldown>0)portalCooldown=Math.max(0,portalCooldown-dt);
+if(activeWorld==='interior'&&interior&&player.y>=interior.h-1.25&&Math.abs(player.x-interior.doorX)<1.4)exitBuilding();
+if(portalCooldown<=0&&activeWorld==='village'&&player.x>=36.0&&player.y>=8.2&&player.y<=13.8){activeWorld='forest';player.x=5.2;player.y=16.5;tapTarget=null;pendingTapInteract=false;portalCooldown=1000;forestEncounterDistance=0;showToast('Kamu memasuki Hutan Berbisik. Waspadai random encounter!');}
+else if(portalCooldown<=0&&activeWorld==='forest'&&player.x<=2.8&&player.y>=13&&player.y<=19.5){activeWorld='village';player.x=32.2;player.y=10.5;tapTarget=null;pendingTapInteract=false;portalCooldown=1000;showToast('Kamu kembali ke Desa Veyra.');}
+if(activeWorld==='forest'&&mag>.08){forestEncounterDistance+=Math.hypot(dx,dy)*player.speed*dt/1000;if(forestEncounterDistance>=nextEncounterAt&&Math.random()<.72){forestEncounterDistance=0;nextEncounterAt=5+Math.random()*5;startBattle();return}else if(forestEncounterDistance>=nextEncounterAt){forestEncounterDistance=0;nextEncounterAt=2+Math.random()*3}}
+if(activeWorld==='interior'&&interior){Zm=Math.max(.6,Math.min(3,(W-24)/(interior.w*TS),H*.66/(interior.h*TS)));const vw=W/Zm,vh=H/Zm;cam.x=-(vw-interior.w*TS)/2;cam.y=interior.h*TS/2-vh*.47}else{updateWorldCamera()}const loc=document.getElementById('location');if(loc){const inForest=activeWorld==='forest',inInt=activeWorld==='interior'&&interior;loc.innerHTML=(inInt?interior.def.title:inForest?'HUTAN BERBISIK':'DESA VEYRA')+'<br><span style="color:#b8d9c6">'+(inInt?'Pintu keluar ada di bawah':inForest?'Langkahmu dapat memicu encounter':'Pagi yang tenang')+'</span>';}const o=activeWorld==='village'?nearest():null;const io=activeWorld==='interior'&&interior?interiorNearest():null;document.getElementById('hint').textContent=activeWorld==='interior'?(io?`Dekat: ${io.title} · tekan INTERAKSI`:'Jalan ke pintu di bawah untuk keluar'):activeWorld==='forest'?'Hutan Berbisik · sentuh kiri untuk kembali · jelajahi untuk menemukan musuh':(o?(o.type==='house'&&INTERIORS[o.name]?`${o.name} · tekan INTERAKSI untuk masuk`:`Dekat: ${o.name} · sentuh untuk berinteraksi`):'Sentuh tanah untuk berjalan · cari panah Hutan Berbisik');if(performance.now()-lastToast>2400)document.getElementById('toast').classList.remove('show')}
+function drawFoliage(x0,y0,x1,y1){
+ // Kanopi bergaya anime-fantasy: bayangan lembut, kelompok daun berlapis, rim-light dan kilau kecil.
+ for(let ty=y0;ty<y1;ty++)for(let tx=x0;tx<x1;tx++){
+  const t=tile(tx,ty); if(t!==1 && t!==3 && ((tx*17+ty*29)%11!==0)) continue;
+  if((tx<0||ty<0||tx>=MW||ty>=MH)&&((tx*7+ty*13)%2!==0))continue;
+  const cx=tx*TS-cam.x+TS*.5, cy=ty*TS-cam.y+TS*.45;
+  if(cx<-55||cy<-65||cx>VW+55||cy>VH+55)continue;
+  const TX=Math.abs(tx)+(tx<0?7:0),TY=Math.abs(ty)+(ty<0?5:0);
+  const forest=activeWorld==='forest';
+  const leaf=forest?['#123e35','#1b5842','#286b49']:['#1e4d39','#2d6443','#3c7548'];
+  ctx.save();
+  // bayangan dan batang kecil
+  ctx.fillStyle='#07151dbb';ctx.beginPath();ctx.ellipse(cx+4,cy+14,TS*.49,TS*.25,-.08,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#392f2a';ctx.beginPath();ctx.moveTo(cx-4,cy+2);ctx.lineTo(cx+4,cy+2);ctx.lineTo(cx+7,cy+18);ctx.lineTo(cx-6,cy+18);ctx.closePath();ctx.fill();
+  // volume kanopi
+  let g=ctx.createRadialGradient(cx-7,cy-13,2,cx,cy-2,TS*.58);g.addColorStop(0,forest?'#65a96a':'#8ac66c');g.addColorStop(.34,leaf[(TX+TY)%leaf.length]);g.addColorStop(1,forest?'#0b302d':'#173d31');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy-5,TS*.43,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=leaf[(TX+TY+1)%leaf.length];ctx.beginPath();ctx.arc(cx-9,cy+1,TS*.25,0,Math.PI*2);ctx.arc(cx+9,cy+2,TS*.27,0,Math.PI*2);ctx.fill();
+  // guratan daun dan highlight berkelompok
+  for(let i=0;i<6;i++){const lx=cx+(((TX*13+TY*7+i*11)%21)-10),ly=cy-14+((TX*5+TY*17+i*7)%22);ctx.strokeStyle=i%2?'#b4df8b99':'#0b302b99';ctx.lineWidth=i%3===0?2:1;ctx.beginPath();ctx.moveTo(lx-2,ly+2);ctx.quadraticCurveTo(lx,ly-3,lx+3,ly-2);ctx.stroke();}
+  if((TX*3+TY*7)%4===0){ctx.fillStyle='#ffe5a1';ctx.shadowColor='#ffd879';ctx.shadowBlur=10;ctx.beginPath();ctx.arc(cx+5,cy-12,1.7,0,Math.PI*2);ctx.fill();}
+  if(forest&&(TX*7+TY*11)%13===0){ctx.fillStyle='#d9f6c7aa';ctx.shadowColor='#c4ffd9';ctx.shadowBlur=14;ctx.beginPath();ctx.arc(cx-8,cy-8,2,0,Math.PI*2);ctx.fill();}
+  ctx.restore();
+ }
+}
+function render(){ctx.clearRect(0,0,W,H);ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();if(activeWorld==='interior'&&interior){ctx.scale(Zm,Zm);renderInterior();ctx.restore();return}ctx.scale(Zw,Zw);const x0=Math.floor(cam.x/TS),y0=Math.floor(cam.y/TS),x1=Math.ceil((cam.x+VW)/TS)+1,y1=Math.ceil((cam.y+VH)/TS)+1;for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)drawTile(tile(x,y),x*TS-cam.x,y*TS-cam.y,x,y);drawFoliage(x0,y0,x1,y1);if(activeWorld==='village'){for(const h of houses)drawHouse(h)}else{ctx.fillStyle='#e4dfb9';ctx.font='bold 18px Georgia';ctx.textAlign='center';ctx.fillText('HUTAN BERBISIK',VW/2,120);ctx.textAlign='start'}const entities=[...(activeWorld==='village'?objects.map(o=>({y:o.y,draw:()=>drawObject(o)})):[]),{y:player.y,draw:drawPlayer}].sort((a,b)=>a.y-b.y);
+entities.forEach(e => e.draw());
+// Lingkaran respons sentuhan: menandai tepat lokasi yang baru disentuh dan memudar perlahan.
+if(touchMarker){const age=performance.now(),remain=Math.max(0,(touchMarker.until-age)/1100);if(remain<=0)touchMarker=null;else{const mx=touchMarker.x*TS-cam.x,my=touchMarker.y*TS-cam.y,pulse=Math.sin(age/90)*3;ctx.save();ctx.globalAlpha=remain;ctx.strokeStyle='#fff4a8';ctx.lineWidth=3;ctx.shadowColor='#65eaff';ctx.shadowBlur=18;ctx.beginPath();ctx.arc(mx,my,13+pulse,0,Math.PI*2);ctx.stroke();ctx.fillStyle='rgba(90,235,255,.20)';ctx.beginPath();ctx.arc(mx,my,7+pulse*.3,0,Math.PI*2);ctx.fill();ctx.restore();}}
+// Penanda arah portal yang selalu terlihat saat area gerbang masuk layar.
+if(activeWorld==='village'){
+ const gx=36*TS-cam.x, gy=10.5*TS-cam.y, pulse=Math.sin(performance.now()/230)*4;
+ if(gx>-70&&gx<W+70&&gy>-70&&gy<H+70){
+  ctx.save();ctx.translate(gx,gy);
+  ctx.fillStyle='rgba(75,220,255,.20)';ctx.beginPath();ctx.ellipse(0,0,30+pulse,20+pulse*.4,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#82eaff';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,20+pulse,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#ffe58c';ctx.beginPath();ctx.moveTo(0,-31-pulse);ctx.lineTo(-12,-10);ctx.lineTo(-4,-12);ctx.lineTo(-4,2);ctx.lineTo(4,2);ctx.lineTo(4,-12);ctx.lineTo(12,-10);ctx.closePath();ctx.fill();
+  ctx.font='bold 12px system-ui';ctx.textAlign='center';ctx.lineWidth=4;ctx.strokeStyle='#102333';ctx.strokeText('HUTAN BERBISIK →',0,-43-pulse);ctx.fillStyle='#eafcff';ctx.fillText('HUTAN BERBISIK →',0,-43-pulse);ctx.restore();
+ }
+}else{
+ const ex=3*TS-cam.x,ey=16.5*TS-cam.y;
+ ctx.save();ctx.fillStyle='rgba(255,226,125,.18)';ctx.beginPath();ctx.arc(ex,ey,24+Math.sin(performance.now()/230)*3,0,Math.PI*2);ctx.fill();ctx.font='bold 12px system-ui';ctx.textAlign='center';ctx.lineWidth=4;ctx.strokeStyle='#102333';ctx.strokeText('← KEMBALI KE DESA',ex+35,ey-28);ctx.fillStyle='#fff0a7';ctx.fillText('← KEMBALI KE DESA',ex+35,ey-28);ctx.restore();
+}
+if(activeWorld==='village'){for(const h of houses){if(!INTERIORS[h.name])continue;const dx0=(h.x+h.w/2)*TS-cam.x,dy0=(h.y+h.h)*TS-cam.y;if(Math.hypot(player.x-(h.x+h.w/2),player.y-(h.y+h.h))>6)continue;const bob=Math.sin(performance.now()/260)*3;ctx.save();ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.lineWidth=3;ctx.strokeStyle='#102333';ctx.strokeText('▲ MASUK',dx0,dy0-44+bob);ctx.fillStyle='#fff0a7';ctx.fillText('▲ MASUK',dx0,dy0-44+bob);ctx.restore()}}
+for(const monster of mapMonsters)drawMapMonster(monster);
+
+// Cahaya magis di sekitar karakter
+const time = performance.now() / 1000;
+const px = player.x * TS - cam.x;
+const py = player.y * TS - cam.y;
+
+const glow = ctx.createRadialGradient(
+  px, py, 5,
+  px, py, 150
+);
+glow.addColorStop(0, "rgba(100, 200, 255, 0.16)");
+glow.addColorStop(1, "rgba(70, 100, 220, 0)");
+
+ctx.fillStyle = glow;
+ctx.fillRect(0, 0, VW, VH);
+
+// Partikel roh bercahaya
+for (let i = 0; i < 18; i++) {
+  const x = (i * 137 + time * (i % 2 ? 9 : -5) + VW) % VW;
+  const y = (i * 83 + Math.sin(time + i) * 20 + VH) % VH;
+
+  ctx.beginPath();
+  ctx.arc(x, y, i % 3 === 0 ? 2 : 1.3, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(160, 225, 255, ${
+    0.35 + 0.3 * Math.sin(time * 2 + i)
+  })`;
+  ctx.shadowColor = "#72d8ff";
+  ctx.shadowBlur = 10;
+  ctx.fill();
+}
+
+ctx.shadowBlur = 0;
+
+// Efek gelap lembut di sudut layar
+const vignette = ctx.createRadialGradient(
+  VW / 2, VH / 2, Math.min(VW, VH) * 0.25,
+  VW / 2, VH / 2, Math.max(VW, VH) * 0.75
+);
+vignette.addColorStop(0, "rgba(0, 0, 15, 0)");
+vignette.addColorStop(1, "rgba(0, 0, 20, 0.32)");
+
+ctx.fillStyle = vignette;
+ctx.fillRect(0, 0, VW, VH);
+
+ctx.restore();
+}
+// Pulihkan save sebelum permainan berjalan, lalu proses hasil encounter satu kali.
+loadGame(true);
+setInterval(()=>{if(!battleState)saveGame(true)},15000);
+addEventListener('pagehide',()=>saveGame(true));
+document.addEventListener('visibilitychange',()=>{if(document.hidden)saveGame(true)});
+(function applyBattleReturn(){try{const raw=localStorage.getItem('veyra-battle-result');if(!raw)return;const result=JSON.parse(raw);if(result.applied)return;
+ if(result.hero){playerStats.hp=Math.max(1,Math.min(playerStats.maxHp,Number(result.hero.hp)||playerStats.hp));playerStats.mp=Math.max(0,Math.min(playerStats.maxMp,Number(result.hero.mp)||0));}
+ if(result.items){gameState.items.potion=Math.max(0,Number(result.items.potion)||0);gameState.items.ether=Math.max(0,Number(result.items.ether)||0);}
+ if(result.hero){['atk','def','matk','mdef'].forEach(k=>{if(Number.isFinite(Number(result.hero[k])))playerStats[k]=Number(result.hero[k])})}
+ if(result.outcome==='victory'){const r=result.reward||{};gameState.gold+=Number(r.gold||0);gameState.items.potion+=Number(r.potion||0);if(r.exp)gainExp(Number(r.exp));showToast(`Menang! +${r.exp||0} EXP · +${r.gold||0} Gil`);}
+ else if(result.outcome==='defeat'){playerStats.hp=1;showToast('Kael diselamatkan dari hutan. HP dipulihkan menjadi 1.');}
+ else if(result.outcome==='flee'){showToast('Kamu berhasil kabur dari encounter.');}
+ result.applied=true;localStorage.setItem('veyra-battle-result',JSON.stringify(result));updateInventoryHUD();saveGame(true);
+ }catch(e){console.warn('Hasil battle tidak dapat dibaca',e)}})();
+
+let prev=performance.now();function loop(now){const dt=Math.min(45,now-prev);prev=now;update(dt);render();drawFade(dt);requestAnimationFrame(loop)}requestAnimationFrame(loop);
+
+const pad = document.getElementById('pad');
+const stick = document.getElementById('stick');
+
+let pid = null;
+
+function resetJoystick() {
+  pid = null;
+  joy = { x: 0, y: 0 };
+
+  stick.style.left = '50%';
+  stick.style.top = '50%';
+}
+
+function joystick(e) {
+  const r = pad.getBoundingClientRect();
+  const cx = r.left + r.width / 2;
+  const cy = r.top + r.height / 2;
+
+  let x = (e.clientX - cx) / (r.width * 0.34);
+  let y = (e.clientY - cy) / (r.height * 0.34);
+
+  const m = Math.hypot(x, y);
+
+  if (m > 1) {
+    x /= m;
+    y /= m;
+  }
+
+  joy = { x, y };
+
+  stick.style.left = `${50 + x * 34}%`;
+  stick.style.top = `${50 + y * 34}%`;
+}
+
+pad.addEventListener('pointerdown', e => {
+  // Abaikan klik mouse sekunder
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+  // Pulihkan status bila pointer sebelumnya tertinggal
+  if (pid !== null && pid !== e.pointerId) {
+    resetJoystick();
+  }
+
+  pid = e.pointerId;
+
+  try {
+    pad.setPointerCapture(e.pointerId);
+  } catch (_) {
+    // Pointer capture tidak tersedia; event global tetap menangani pelepasan
+  }
+
+  joystick(e);
+});
+
+pad.addEventListener('pointermove', e => {
+  if (e.pointerId !== pid) return;
+  joystick(e);
+});
+
+function stopJoy(e) {
+  if (e.pointerId !== pid) return;
+  resetJoystick();
+}
+
+pad.addEventListener('pointerup', stopJoy);
+pad.addEventListener('pointercancel', stopJoy);
+pad.addEventListener('lostpointercapture', stopJoy);
+
+// Pastikan joystick reset saat halaman kehilangan fokus
+window.addEventListener('blur', resetJoystick);
+window.addEventListener('pagehide', resetJoystick);document.getElementById('interact').addEventListener('click',()=>{if(document.getElementById('dialog').classList.contains('show'))document.getElementById('dialog').classList.remove('show');else interact()});document.getElementById('menu').addEventListener('click',openMenu);document.getElementById('modalClose').addEventListener('click',closeModal);document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});addEventListener('keydown',e=>{keys[e.key]=true;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'].includes(e.key)){tapTarget=null;pendingTapInteract=false;}if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key===' '||e.key==='Enter')interact();if(e.key.toLowerCase()==='i'){const panel=document.getElementById('inventoryHUD');panel.style.display=panel.style.display==='block'?'none':'block';if(panel.style.display==='block')updateInventoryHUD()}if(e.key.toLowerCase()==='h')usePotion();if(e.key.toLowerCase()==='z')toggleCam()});addEventListener('keyup',e=>keys[e.key]=false);addEventListener('blur',()=>{for(const k in keys)keys[k]=false;joy={x:0,y:0}});
+})();
+
+</script></body></html>

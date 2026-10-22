@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Echoes of Veyra — JRPG System v2</title>
+<style>
+:root{--bg:#03162d;--panel:#061d39;--panel2:#082b50;--gold:#8ce8ff;--text:#f1f8ff;--muted:#9fc7e8;--line:#1684c9;--red:#ff657e;--blue:#28b8ff;--violet:#d58cff;--green:#48e29a;--orange:#ffca62}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#26304b,#0b1020 70%);color:var(--text);font:14px system-ui,sans-serif;min-height:100vh;padding:16px}button{cursor:pointer;font:inherit;color:inherit}.wrap{max-width:1100px;margin:auto}.header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.logo{font:700 clamp(19px,3vw,29px) Georgia,serif;color:var(--gold);letter-spacing:1px}.sub{color:var(--muted);font-size:10px;letter-spacing:3px}.badge{border:1px solid #74669a;border-radius:20px;padding:7px 11px;color:#d9c8ff;font-size:11px}.arena{position:relative;border:1px solid #4b5779;border-radius:18px;overflow:hidden;min-height:255px;background:linear-gradient(#192540 0%,#28324a 60%,#283b3d 60%,#1a2a32 100%);margin-bottom:14px}.stars{position:absolute;inset:0;background-image:radial-gradient(#dce7ff 1px,transparent 1px),radial-gradient(#a9baff 1px,transparent 1px);background-size:47px 39px,71px 63px;background-position:3px 7px,28px 17px;opacity:.4}.moon{position:absolute;width:58px;height:58px;border-radius:50%;background:#e2dcff;box-shadow:0 0 45px #a99bff88;right:15%;top:22px}.battlefield{position:relative;min-height:255px;display:flex;justify-content:space-between;align-items:flex-end;padding:24px clamp(12px,6vw,80px) 25px;gap:12px}.party,.foes{display:flex;align-items:flex-end;gap:clamp(5px,2vw,20px)}.foes{align-items:center;flex-direction:column}.fighter{position:relative;text-align:center;min-width:60px}.sprite{height:90px;width:64px;position:relative;margin:auto;filter:drop-shadow(0 5px 2px #0006)}.hero .sprite:before{content:"";position:absolute;left:20px;top:18px;width:25px;height:24px;background:#f0d2c4;box-shadow:-4px -6px #d8e1f4,-7px -2px #aabbe2,3px -10px #d8e1f4,8px -7px #b8c9e9,0 23px #4d5d91,-5px 29px #283a66,6px 29px #283a66,-5px 43px #a9b8df,6px 43px #a9b8df,-5px 53px #d8e1f4,6px 53px #d8e1f4}.hero:nth-child(2) .sprite:before{background:#d8a982;box-shadow:-4px -6px #5b3d58,-7px -2px #5b3d58,3px -10px #704c67,8px -7px #704c67,0 23px #9b536e,-5px 29px #5d354f,6px 29px #5d354f,-5px 43px #c48c94,6px 43px #c48c94,-5px 53px #d5c0ce,6px 53px #d5c0ce}.hero:nth-child(3) .sprite:before{background:#e6c9a9;box-shadow:-4px -6px #d7a96b,-7px -2px #bd8d5b,3px -10px #e9c58d,8px -7px #d7a96b,0 23px #4b8d92,-5px 29px #315e75,6px 29px #315e75,-5px 43px #8bd3d1,6px 43px #8bd3d1,-5px 53px #e4d5a9,6px 53px #e4d5a9}.enemy .sprite{height:80px;width:66px}.enemy .sprite:before{content:"";position:absolute;top:18px;left:12px;width:42px;height:40px;background:#65508d;clip-path:polygon(20% 0,40% 10%,50% 0,75% 15%,100% 45%,80% 90%,50% 100%,15% 85%,0 45%)}.enemy .sprite:after{content:"";position:absolute;top:34px;left:23px;width:7px;height:4px;background:#ff89b3;box-shadow:13px 0 #ff89b3}.fighter-name{font-weight:700;font-size:12px}.fighter-role{font-size:10px;color:#bdc7e0}.mini{background:#0c1323eF;border:1px solid #536080;border-radius:8px;padding:6px 7px;margin-top:6px;min-width:78px;text-align:left}.mini-line{font-size:10px;display:flex;justify-content:space-between;gap:5px}.bar{height:5px;background:#35405a;border-radius:5px;overflow:hidden;margin:3px 0}.fill{height:100%;transition:width .25s}.hp{background:linear-gradient(90deg,#e84d6b,#ff9c9c)}.mp{background:linear-gradient(90deg,#488dff,#8de3ff)}.selected .sprite{filter:drop-shadow(0 0 9px #b5a0ff)}.selected .fighter-name{color:var(--gold)}.dead{opacity:.35;filter:grayscale(1)}.battle-ui{display:grid;grid-template-columns:minmax(210px,.8fr) 1.5fr;gap:14px}.panel{background:#151d32ef;border:1px solid var(--line);border-radius:15px;padding:14px}.panel h2{font-size:12px;letter-spacing:1.5px;color:var(--gold);margin:0 0 11px}.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{background:#202a43;border-radius:9px;padding:8px}.stat span{display:block;color:var(--muted);font-size:10px}.stat b{font-size:16px}.red{color:#ff9aaa}.blue{color:#91d9ff}.purple{color:#d4a3ff}.green{color:#90e6b8}.orange{color:#ffc17e}.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.action{border:1px solid #4d5b7b;border-radius:10px;background:#232e4b;padding:10px 8px;text-align:left;min-height:77px}.action b{display:block;font-size:12px;margin-bottom:4px}.action small{display:block;color:#bac5df;font-size:10px;line-height:1.35}.action.phys{border-top:3px solid #f0c97e}.action.magic{border-top:3px solid #9f8aff}.action.hybrid{border-top:3px solid #ed8bce}.action.support{border-top:3px solid #7de0ad}.action:disabled{opacity:.35;cursor:not-allowed}.action:not(:disabled):hover{background:#344264;border-color:#bca6ff}.target-row{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 10px}.target{background:#222d48;border:1px solid #4b5878;border-radius:9px;padding:8px 10px;font-size:11px}.target.active{border-color:#f0cb83;color:#ffdfa0}.log{height:112px;overflow:auto;background:#0c1222;border:1px solid #303b58;border-radius:10px;padding:9px;font-size:12px;line-height:1.55;color:#cbd4e8;margin-top:12px}.hit{color:#ffb2bd}.spell{color:#cdb8ff}.heal{color:#8ce5b0}.notice{color:#b9c6e3;font-size:11px;margin-top:9px;line-height:1.5}.footer{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:12px;color:var(--muted);font-size:11px}.reset{background:transparent;border:1px solid #55627f;border-radius:8px;padding:8px 10px}.status-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}.tag{font-size:9px;border-radius:5px;padding:3px 5px;background:#34405a;color:#e4e9ff}.tag.burn{background:#68392e}.tag.poison{background:#31573f}.tag.stun{background:#5b4b77}.legend{display:flex;flex-wrap:wrap;gap:7px;font-size:10px;color:#bdc8df;margin-top:10px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
+
+
+body{background:radial-gradient(ellipse at 50% 0%,#145c89 0%,#092a4b 36%,#031326 78%);font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:1500px}.logo{color:#e9faff;text-shadow:0 0 18px #38bfff;letter-spacing:.5px}.sub{color:#8bdcff;letter-spacing:2px}.badge{border-color:#159be5;border-radius:5px;background:#031b35;color:#a8eaff;box-shadow:0 0 12px #0788e855}
+.arena{min-height:365px;border:1px solid #16a6fa;border-radius:8px;background:linear-gradient(180deg,#167bb4 0%,#5db6d6 32%,#c8d8ba 33%,#e6d09c 60%,#2a684d 61%,#092b38 100%);box-shadow:inset 0 0 45px #0074bd66,0 0 18px #008be744}
+.arena:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 42%,#183d30aa 43%,#061a2dcc 100%),radial-gradient(ellipse at 50% 70%,#fff3c055,transparent 48%),linear-gradient(115deg,#b9e9ff18,transparent 42%,#fff0c018);pointer-events:none}
+.stars{opacity:.28;background-image:radial-gradient(ellipse at 20% 35%,#d5efbd66 0 2px,transparent 3px),radial-gradient(ellipse at 70% 20%,#c5f5e066 0 2px,transparent 3px),radial-gradient(#fff8d7aa 1px,transparent 2px);background-size:91px 73px,113px 89px,47px 39px}.moon{width:70px;height:70px;top:35px;background:#d8f4ff;box-shadow:0 0 55px #c5f2ff99;opacity:.8}
+.battlefield{min-height:365px;padding:26px clamp(12px,4vw,60px) 24px;align-items:flex-end}.party{order:1;gap:clamp(10px,3vw,36px)}.foes{order:2;flex-direction:row;align-items:flex-end;gap:clamp(10px,3vw,30px);align-self:flex-start}
+.fighter{min-width:78px}.sprite{height:110px;width:75px}.hero .sprite:before{transform:scale(1.18);transform-origin:bottom center;border-radius:35% 35% 28% 28%;box-shadow:-4px -6px #d8e1f4,-7px -2px #aabbe2,3px -10px #d8e1f4,8px -7px #b8c9e9,0 23px #294d80,-5px 29px #1b3158,6px 29px #1b3158,-5px 43px #a9c9e8,6px 43px #a9c9e8,-5px 53px #d8e1f4,6px 53px #d8e1f4}.enemy .sprite{height:100px;width:78px}.enemy .sprite:before{background:#6352a4;filter:drop-shadow(0 0 8px #ac7bff);clip-path:polygon(20% 0,40% 10%,50% 0,75% 15%,100% 45%,80% 90%,50% 100%,15% 85%,0 45%)}
+.fighter-name{font-size:13px;color:#f4fbff}.fighter-role{color:#b8eaff}.mini{background:#031a32ed;border:1px solid #1389ce;border-radius:4px;box-shadow:0 0 8px #008ee833}.bar{height:8px;border-radius:1px;background:#193c58}.hp{background:linear-gradient(90deg,#ff355c,#ff8b9e)}.mp{background:linear-gradient(90deg,#00a8ff,#55e1ff)}.selected .sprite{filter:drop-shadow(0 0 11px #68dcff)}.selected .fighter-name{color:#9cecff}
+.battle-ui{grid-template-columns:minmax(260px,.8fr) minmax(0,1.4fr);gap:10px}.panel{background:linear-gradient(145deg,#062746f5,#03152cf5);border:1px solid #168ad1;border-radius:7px;padding:13px;box-shadow:inset 0 0 16px #006db522}.panel h2{color:#83e6ff;letter-spacing:.8px;border-bottom:1px solid #176b9e;padding-bottom:8px}.stat{background:#092b4b;border:1px solid #114d76;border-radius:4px}.actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.action{background:linear-gradient(100deg,#092e54,#061d38);border:1px solid #17649c;border-radius:5px;min-height:58px;padding:8px}.action.phys{border-top:1px solid #208bca}.action.magic{border-top:1px solid #a879ff}.action.hybrid{border-top:1px solid #f07ecb}.action.support{border-top:1px solid #48e29a}.action:not(:disabled):hover{background:#0a4779;border-color:#65d9ff;box-shadow:0 0 10px #008eff66}.target{background:#082b4b;border:1px solid #1875ad;border-radius:5px}.target.active{border-color:#73e6ff;color:#b8f4ff;background:#06406b}.log{background:#03172c;border-color:#15527b}.reset{border-color:#1679b4;border-radius:5px}.footer{color:#8ecdf2}
+@media(max-width:680px){.arena,.battlefield{min-height:280px}.battlefield{padding:12px 5px;gap:4px}.foes{gap:2px;flex-wrap:wrap;justify-content:center}.party{gap:4px}.fighter{min-width:44px}.sprite{height:76px;width:50px;transform:scale(.8);margin-bottom:-10px}.enemy .sprite{height:70px;width:48px}.fighter-name{font-size:10px}.fighter-role{font-size:9px}.mini{min-width:54px;padding:4px}.mini-line{font-size:8px}.battle-ui{grid-template-columns:1fr}.actions{grid-template-columns:repeat(2,minmax(0,1fr))}.stats-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:680px){body{padding:9px}.header{margin-bottom:9px}.arena{min-height:218px}.battlefield{min-height:218px;padding:18px 7px 18px}.sprite{transform:scale(.8);transform-origin:bottom center;margin-bottom:-13px}.fighter{min-width:48px}.mini{min-width:62px;padding:5px}.mini-line{font-size:9px}.battle-ui{grid-template-columns:1fr}.panel{padding:11px}.actions{grid-template-columns:repeat(2,minmax(0,1fr))}.action{min-height:66px}.stats-grid{grid-template-columns:repeat(3,1fr)}.stat{padding:6px}.stat b{font-size:14px}.log{height:86px}.footer{align-items:flex-start}}
+
+/* Mobile: compact, app-like battle screen with tap-to-open skills */
+.skill-dropdown summary{display:none;cursor:pointer;list-style:none}
+.skill-dropdown summary::-webkit-details-marker{display:none}
+@media(max-width:680px){
+ html,body{height:100%;min-height:100%;overflow:hidden}
+ body{padding:env(safe-area-inset-top) 7px env(safe-area-inset-bottom);}
+ .wrap{height:100dvh;min-height:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+ .header{flex:0 0 auto;margin:0;min-height:36px;gap:6px}.logo{font-size:17px}.sub{font-size:8px;letter-spacing:1px}.badge{font-size:9px;padding:5px 7px}
+ .arena{flex:1 1 auto;min-height:0;margin:0;border-radius:7px}
+ .battlefield{height:100%;min-height:0;padding:8px 7px 10px;align-items:stretch;position:relative}
+ .party{position:absolute;left:8px;bottom:9px;order:1;gap:3px;align-items:flex-end;max-width:65%}
+ .foes{position:absolute;right:8px;top:8px;order:2;align-self:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:48%}
+ .fighter{min-width:0}.hero .sprite{height:63px;width:42px;transform:scale(.78);transform-origin:bottom center;margin-bottom:-12px}
+ .enemy{display:grid;grid-template-columns:29px minmax(48px,1fr);grid-template-rows:auto 7px;align-items:center;column-gap:5px;row-gap:2px;background:#03172ddd;border:1px solid #168ad1;border-radius:6px;padding:4px 6px;max-width:100%;min-width:100px;position:relative}
+ .enemy .sprite{grid-column:1;grid-row:1 / span 2;height:34px;width:29px;flex:0 0 29px;transform:scale(.62);transform-origin:center;margin:0}
+ .enemy .sprite:before{top:2px;left:0}.enemy .sprite:after{top:18px;left:9px}
+ .enemy .fighter-name{grid-column:2;grid-row:1;font-size:9px;white-space:nowrap;text-align:left}.enemy .mini{display:none}
+ .hero .fighter-name{font-size:9px}.fighter-role{display:none}.hero .mini{min-width:0;width:58px;padding:3px 4px;margin-top:3px}.mini-line{font-size:8px;gap:2px}.bar{height:4px;margin:2px 0}
+ .battle-ui{flex:0 0 auto;display:block;min-height:0}
+ .battle-ui>.panel:first-child{display:none}
+ .battle-ui>.panel:last-child{padding:6px 7px;background:#031a32f5;border-radius:6px;max-height:31dvh;overflow:auto}
+ .battle-ui>.panel:last-child h2{font-size:10px;margin:0 0 5px;padding-bottom:4px}
+ .target-row{gap:4px;margin-bottom:5px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}.target{white-space:nowrap;padding:5px 7px;font-size:9px;flex:0 0 auto}
+ .skill-dropdown{margin-top:4px}.skill-dropdown summary{display:block;padding:8px 10px;background:linear-gradient(90deg,#07508a,#062746);border:1px solid #168ad1;border-radius:5px;font-size:11px;font-weight:700;color:#b8f4ff}
+ .skill-dropdown[open] summary{border-radius:5px 5px 0 0}
+ .actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin-top:4px}.action{min-height:0;padding:7px 6px}.action b{font-size:10px;margin-bottom:2px}.action small{font-size:9px;line-height:1.2}
+ .log{height:36px;min-height:36px;margin-top:5px;padding:5px;font-size:10px;line-height:1.25}
+ .footer{flex:0 0 auto;margin:0;font-size:9px;align-items:center;gap:5px}.footer span{max-width:58%;line-height:1.2}.reset{font-size:9px;padding:6px 7px;white-space:nowrap}
+}
+@media(max-width:380px){.hero .mini{width:50px}.hero .sprite{transform:scale(.68);margin-bottom:-17px}.battle-ui>.panel:last-child{max-height:29dvh}.enemy .fighter-name{font-size:8px}}
+
+.command-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-bottom:7px}.command{border:1px solid #1679b4;border-radius:5px;background:#062746;color:#c9edff;padding:8px 3px;font-size:11px;font-weight:700}.command.active{background:#075a91;border-color:#8de8ff;box-shadow:0 0 10px #12a9ff77;color:#fff}.action-label{font-size:10px;color:#8ecdf2;margin:3px 0 6px}.enemy{display:grid;grid-template-columns:30px minmax(45px,1fr);grid-template-rows:auto auto;align-items:center;column-gap:5px;cursor:pointer;transition:filter .2s,transform .2s}.enemy.targeted{outline:2px solid #ffe27a;outline-offset:2px;box-shadow:0 0 0 3px #ffc84d66,0 0 22px #ffe27acc;animation:targetPulse 1s ease-in-out infinite}.enemy.targeted:after{content:'TARGET';position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:900;letter-spacing:1px;color:#fff2a5;text-shadow:0 0 8px #ffb000}.enemy-hp{display:block;grid-column:2;grid-row:2;width:100%;height:9px;background:#26374c;border:1px solid #71a4c6;border-radius:5px;overflow:hidden;margin-top:3px}.enemy-hp-fill{height:100%;background:linear-gradient(90deg,#ff355c,#ffb0b8);transition:width .35s}.enemy-hp-text{display:none}.enemy .mini{display:none}.fighter.attack-lunge{animation:lunge .36s ease}.fighter.hit-flash{animation:hitFlash .35s ease}.damage-pop{position:absolute;z-index:10;left:50%;top:0;transform:translateX(-50%);font-size:17px;font-weight:900;color:#fff5a1;text-shadow:0 2px 2px #000,0 0 10px #ff4d68;pointer-events:none;animation:damageFloat .8s ease forwards}.arena.magic-flash:after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,#8beaff66,transparent 65%);animation:flash .35s ease forwards}.action{min-height:0}.actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.action b{font-size:11px}.action small{font-size:9px}
+@keyframes targetPulse{50%{box-shadow:0 0 0 3px #ffc84d99,0 0 27px #ffe27aff}}@keyframes lunge{50%{transform:translate(8px,-5px) scale(1.08)}}@keyframes hitFlash{0%,100%{filter:none}35%{filter:brightness(3) drop-shadow(0 0 12px #ff4d68)}}@keyframes damageFloat{0%{opacity:0;top:0}20%{opacity:1}100%{opacity:0;top:-36px}}@keyframes flash{0%{opacity:1}100%{opacity:0}}
+@media(max-width:680px){.battle-ui>.panel:last-child{max-height:34dvh;overflow:auto}.command-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-bottom:4px}.command{padding:7px 2px;font-size:10px}.action-label{font-size:9px;margin:2px 0 4px}.actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.action{padding:6px 5px}.action b{font-size:10px}.action small{font-size:8px}.enemy{padding:3px 5px;min-width:84px}.enemy .enemy-hp{display:block;min-width:0}.enemy .fighter-name{font-size:9px}.enemy-hp-text{font-size:8px}.enemy.targeted:after{top:-12px}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --veyra-gold: #e8c982;
+  --veyra-gold-light: #fff0c6;
+  --veyra-blue: #83d9f7;
+  --veyra-bg: #080c18;
+  --veyra-panel: rgba(12, 17, 34, 0.91);
+  --veyra-border: rgba(232, 201, 130, 0.48);
+}
+
+/* Dasar dunia */
+html {
+  background: var(--veyra-bg);
+}
+
+body {
+  color: #eee9df;
+  font-family: "Inter", sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 0%, #233052 0%, transparent 55%),
+    linear-gradient(180deg, #0b1020, #080a12 80%);
+}
+
+/* Judul dan nama karakter */
+h1, h2, h3, .game-title, .title {
+  font-family: "Cinzel", serif;
+  color: var(--veyra-gold-light);
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 18px rgba(232, 201, 130, 0.25);
+}
+
+/* Panel UI RPG */
+.panel, .card, .menu-panel, .dialog,
+.inventory, .shop, .battle-ui {
+  background: var(--veyra-panel);
+  border: 1px solid var(--veyra-border);
+  border-radius: 10px;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.38),
+    inset 0 0 22px rgba(90, 120, 180, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+/* Tombol fantasi */
+button, .btn {
+  font-family: "Inter", sans-serif;
+  color: var(--veyra-gold-light);
+  background: linear-gradient(180deg, #29334b, #121a2b);
+  border: 1px solid rgba(232, 201, 130, 0.65);
+  border-radius: 5px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+button:hover, .btn:hover {
+  transform: translateY(-2px);
+  border-color: #fff0c6;
+  background: linear-gradient(180deg, #3a4968, #1b2941);
+  box-shadow: 0 0 18px rgba(131, 217, 247, 0.18);
+}
+
+button:active, .btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Kanvas peta dan arena */
+canvas {
+  display: block;
+  max-width: 100%;
+  border: 1px solid rgba(232, 201, 130, 0.32);
+  border-radius: 8px;
+  box-shadow:
+    0 0 30px rgba(54, 109, 164, 0.14),
+    0 16px 45px rgba(0, 0, 0, 0.35);
+}
+
+/* Garis pemisah ala menu RPG */
+hr {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--veyra-gold),
+    transparent
+  );
+  opacity: 0.65;
+}
+
+/* Scrollbar */
+* {
+  scrollbar-color: #5b5270 #101322;
+  scrollbar-width: thin;
+}
+
+/* Animasi cahaya halus */
+@keyframes veyraGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px rgba(131, 217, 247, 0.15));
+  }
+  50% {
+    filter: drop-shadow(0 0 9px rgba(131, 217, 247, 0.38));
+  }
+}
+
+.game-title {
+  animation: veyraGlow 4s ease-in-out infinite;
+}
+
+/* Menghormati pengaturan gerak pengguna */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+
+<style id="veyra-battle-visual-polish">
+:root{--gold:#f3d18a;--line:#b99a5b;--blue:#83d9f7}
+body{background:radial-gradient(ellipse at 50% -10%,#36516b 0%,#111c31 45%,#060b16 100%);color:#f8f1df}
+.logo{font-family:Cinzel,Georgia,serif;text-shadow:0 0 24px #f3d18a38;letter-spacing:2px}.sub{color:#9fcbdc}
+.badge{border-color:#b99a5b88;background:#111d30;color:#f6dda1;box-shadow:inset 0 0 12px #8bdfff0a}
+.arena{border:1px solid #c7ad7377;border-radius:15px;background:linear-gradient(180deg,rgba(10,22,30,.12),rgba(5,18,22,.38)),url("assets/battle_painterly.jpg") center 48%/cover no-repeat;box-shadow:0 14px 35px #0006,inset 0 0 55px #78cfff12}
+.arena:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#07111d77,transparent 28%,transparent 72%,#07111d77),linear-gradient(0deg,#07131b66,transparent 55%);z-index:1}
+.battlefield{z-index:0}.moon{background:radial-gradient(circle at 35% 30%,#fff8d7,#c3d9ef 65%,#7899bb);box-shadow:0 0 18px #c4e6ff88,0 0 50px #9bd9ff55}
+.stars{opacity:.55}.panel{background:linear-gradient(145deg,rgba(13,32,53,.97),rgba(5,17,32,.97));border:1px solid #c3a9678a;border-radius:12px;box-shadow:0 10px 28px #0005,inset 0 0 24px #72d8ff08}
+.panel h2{font-family:Cinzel,Georgia,serif;color:#f4d38b;border-bottom:1px solid #b99a5b66;padding-bottom:8px}
+.stat{background:linear-gradient(135deg,#132c45,#09182b);border:1px solid #6caac333}.mini{background:linear-gradient(145deg,#101d30f2,#071322f2);border-color:#b9a16c77}.fighter-name{color:#fff0cb;text-shadow:0 2px 4px #000}.hero .sprite{filter:drop-shadow(0 0 7px #7fdfff25) drop-shadow(0 5px 2px #0007)}.selected .sprite{filter:drop-shadow(0 0 12px #f5d58b) drop-shadow(0 5px 2px #0008)}
+.action,.command,.target,.reset{border-radius:8px;transition:transform .15s,box-shadow .15s,filter .15s}.action:not(:disabled):hover,.command:hover,.target:hover,.reset:hover{transform:translateY(-1px);box-shadow:0 0 16px #5bcfff22;filter:brightness(1.12)}.action{background:linear-gradient(145deg,#123b59,#071a30);border-color:#4b8fb377}.action.phys{border-top:2px solid #edc87b}.action.magic{border-top:2px solid #b89aff}.action.hybrid{border-top:2px solid #ee9fce}.action.support{border-top:2px solid #77dfac}.command.active{background:linear-gradient(145deg,#17648b,#0a2b48);border-color:#d8c17e;box-shadow:0 0 14px #55d9ff33}.log{border-radius:9px;background:linear-gradient(145deg,#041629,#091e30);border-color:#b99a5b55;color:#dceaf0}.reset{background:linear-gradient(145deg,#243f58,#0c1d31);border-color:#c2a76b;color:#fff0c6}
+
+/* Painterly asset pass: combat arena uses the hand-painted forest scene. */
+.arena:before{background:linear-gradient(90deg,#07111d66,transparent 30%,transparent 70%,#07111d66),linear-gradient(0deg,#07131b88,transparent 62%);}
+.enemy{background:linear-gradient(145deg,rgba(9,28,43,.88),rgba(4,17,30,.94));backdrop-filter:blur(2px)}
+@media(max-width:680px){.arena{border-radius:10px}.battle-ui>.panel:last-child{border-color:#b99a5b77}.skill-dropdown summary{background:linear-gradient(100deg,#174d69,#0a2039);border-color:#8bbfcf}.enemy{background:linear-gradient(145deg,#102a43f5,#06162bf5);border-color:#6bb7d977}}
+</style>
+
+<style id="kael-battle-sprite">
+:root{--kael:url(assets/kael_sprites/idle_0.png);--kael-atk:url(assets/kael_sprites/walk_2.png);--kael-hurt:url(assets/kael_sprites/walk_6.png)}
+.hero .sprite{background:var(--kael) center bottom/contain no-repeat;image-rendering:auto}
+.hero .sprite:before,.hero .sprite:after{display:none!important;content:none!important}
+.hero.attack-lunge .sprite{background-image:var(--kael-atk)}
+.hero.hit-flash .sprite{background-image:var(--kael-hurt)}
+.hero.hit-flash{animation:heroHurt .38s ease}
+@keyframes heroHurt{0%,100%{transform:translateX(0);filter:none}20%{transform:translateX(-7px);filter:brightness(2.4) drop-shadow(0 0 10px #ff4d68)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}}
+.hero.dead .sprite{transform-origin:bottom center;animation:heroKO .7s ease forwards}
+@keyframes heroKO{from{transform:rotate(0)}to{transform:rotate(-82deg) translateY(6px)}}
+.hero.dead{opacity:.55}
+.hero .damage-pop{top:8px}
+@media(max-width:680px){.hero .sprite{width:58px;height:98px;transform:none;margin-bottom:-4px}}
+</style>
+<style id="pipit-stage-v54">
+/* Latar arena bersih: tidak ada karakter/UI bawaan gambar, sprite asli tampil di atasnya */
+.arena{background:linear-gradient(0deg,rgba(26,52,30,.78) 0,rgba(26,52,30,0) 30%),linear-gradient(180deg,rgba(8,20,30,.10),rgba(5,18,22,.30)),url("assets/battle_bg_clean.jpg") center/cover no-repeat!important}
+.stage-foes{position:absolute;inset:0;z-index:2;pointer-events:none}
+.stage-foe{position:absolute;right:20%;bottom:13%;height:clamp(84px,27%,190px);aspect-ratio:1/1;pointer-events:auto;cursor:pointer;background:var(--f0) center bottom/contain no-repeat;filter:drop-shadow(0 6px 4px #0008);animation:foeIdle 2.4s ease-in-out infinite;transform-origin:50% 100%;-webkit-tap-highlight-color:transparent}
+.stage-foe.targeted{filter:drop-shadow(0 0 10px #ffe27a) drop-shadow(0 6px 4px #0008)}
+.stage-foe:after{content:"";position:absolute;left:14%;right:14%;bottom:-5%;height:9%;border-radius:50%;background:radial-gradient(#0009,#0000 70%);z-index:-1}
+@keyframes foeIdle{0%,100%{transform:translateY(0);background-image:var(--f0)}45%{transform:translateY(-6px);background-image:var(--f0)}70%{transform:translateY(-9px);background-image:var(--f1)}85%{transform:translateY(-3px);background-image:var(--f1)}}
+.stage-foe.atk{animation:foeAtk .95s cubic-bezier(.4,0,.3,1) forwards;z-index:4}
+@keyframes foeAtk{0%{transform:translate(0,0);background-image:var(--f1)}22%{transform:translate(0,-14px) scale(1.04);background-image:var(--f1)}38%{transform:translate(calc(var(--dx,-200px)*.92),calc(var(--dy,0px)*.92)) scale(1.1);background-image:var(--f2)}52%{transform:translate(calc(var(--dx,-200px)*.92),calc(var(--dy,0px)*.92)) scale(1.1);background-image:var(--f2)}100%{transform:translate(0,0);background-image:var(--f0)}}
+.stage-foe.hurt{animation:foeHurt .5s ease forwards}
+@keyframes foeHurt{0%{transform:translateX(0);background-image:var(--f3);filter:brightness(2.2) drop-shadow(0 0 8px #ff4d68)}25%{transform:translateX(12px)}50%{transform:translateX(-6px);background-image:var(--f3)}100%{transform:translateX(0);background-image:var(--f0);filter:drop-shadow(0 6px 4px #0008)}}
+.stage-foe.ko{pointer-events:none;animation:foeKO .7s ease forwards}
+@keyframes foeKO{0%{background-image:var(--f3);transform:translateY(0) rotate(0);opacity:1}100%{background-image:var(--f3);transform:translateY(34px) rotate(-18deg) scale(.86);opacity:0}}
+.stage-foe .damage-pop{top:6%}
+/* Lapisan <img> bertumpuk: pergantian frame tanpa kedip (gambar sudah ter-decode) */
+.stage-foe{background:none!important}
+.stage-foe .f{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;opacity:0;pointer-events:none;-webkit-user-select:none;user-select:none}
+.stage-foe .f0{opacity:1}
+.stage-foe:not(.atk):not(.hurt):not(.ko) .f0{animation:idleF0 2.4s infinite}
+.stage-foe:not(.atk):not(.hurt):not(.ko) .f1{animation:idleF1 2.4s infinite}
+@keyframes idleF0{0%,69%{opacity:1}70%,85%{opacity:0}86%,100%{opacity:1}}
+@keyframes idleF1{0%,69%{opacity:0}70%,85%{opacity:1}86%,100%{opacity:0}}
+.stage-foe.atk .f0{opacity:0;animation:atkF0 .95s forwards}
+.stage-foe.atk .f1{animation:atkF1 .95s forwards}
+.stage-foe.atk .f2{animation:atkF2 .95s forwards}
+@keyframes atkF0{0%,52%{opacity:0}53%,100%{opacity:1}}
+@keyframes atkF1{0%,37%{opacity:1}38%,100%{opacity:0}}
+@keyframes atkF2{0%,37%{opacity:0}38%,52%{opacity:1}53%,100%{opacity:0}}
+.stage-foe.hurt .f0{animation:hurtF0 .5s forwards}
+.stage-foe.hurt .f3{animation:hurtF3 .5s forwards}
+@keyframes hurtF0{0%,59%{opacity:0}60%,100%{opacity:1}}
+@keyframes hurtF3{0%,59%{opacity:1}60%,100%{opacity:0}}
+.stage-foe.ko .f0{opacity:0;animation:none}.stage-foe.ko .f3{opacity:1;animation:none}
+.enemy[data-eid=pipit] .sprite{background:var(--f0) center/contain no-repeat;width:34px;height:34px;transform:none}
+.enemy[data-eid=pipit] .sprite:before,.enemy[data-eid=pipit] .sprite:after{display:none!important;content:none!important}
+@media(max-width:680px){.hero .sprite{width:78px;height:132px;transform:none;margin-bottom:0}}
+.wrap{zoom:var(--ub,1)}
+@media(min-width:900px){.wrap{max-width:1180px!important}}
+@media(min-width:681px){.hero .sprite{width:104px;height:182px}.stage-foe{right:24%;height:clamp(130px,44%,210px)}}
+:root{--f0:url(assets/enemies/pipit_0.png);--f1:url(assets/enemies/pipit_1.png);--f2:url(assets/enemies/pipit_2.png);--f3:url(assets/enemies/pipit_3.png)}
+</style>
+</head><body><main class="wrap">
+<header class="header"><div><div class="logo">ECHOES OF VEYRA</div><div class="sub">JOURNEY BEYOND THE REALM · JRPG</div></div><div class="badge">BATTLE SYSTEM · V6</div></header>
+<section class="arena"><div class="stars"></div><div class="moon"></div><div class="battlefield"><div class="party" id="party"></div><div class="foes" id="foes"></div></div></section>
+<div class="battle-ui"><section class="panel"><h2>✦ STATUS PARTY</h2><div id="activeName" style="font-weight:700;color:var(--gold);margin-bottom:9px">Kael · Veilblade</div><div class="stats-grid" id="stats"></div><div id="statusEffects" class="status-row"></div><div class="notice">Pilih karakter untuk melihat status. Efek elemen dan status abnormal dapat memengaruhi jalannya pertarungan.</div><div class="legend"><span><i class="dot" style="background:#f0c97e"></i>Physical</span><span><i class="dot" style="background:#9f8aff"></i>Magic</span><span><i class="dot" style="background:#ed8bce"></i>Hybrid</span><span><i class="dot" style="background:#7de0ad"></i>Support</span></div></section>
+<section class="panel"><h2>✦ COMMAND & SKILL</h2><div class="command-row" id="commands"><button class="command active" data-mode="attack">⚔ Attack</button><button class="command" data-mode="phys">✦ Skill</button><button class="command" data-mode="magic">✧ Magic</button><button class="command" data-mode="hybrid">◇ Hybrid</button><button class="command" data-mode="defend">🛡 Defend</button><button class="command" data-mode="items">🎒 Item</button><button class="command" data-mode="run">↗ Run</button></div><div class="action-label" id="actionLabel">Pilih musuh dengan menyentuhnya, lalu Attack.</div><div class="actions" id="actions"></div><div class="log" id="log" aria-live="polite"></div></section></div>
+<div class="footer"><span>Strategi · Elemen · Status abnormal · Critical · Echoes of Veyra</span><div style="display:flex;gap:7px;flex-wrap:wrap"><button class="reset" id="backVillage">← Kembali ke Desa</button><button class="reset" id="reset">↻ Ulangi pertarungan</button></div></div>
+</main>
+<script>
+(function(){function ap(){const w=innerWidth,h=innerHeight,u=w<700?Math.max(.85,Math.min(1,Math.sqrt(w*h)/620)):Math.max(.85,Math.min(1.35,h/930));document.documentElement.style.setProperty('--ub',u.toFixed(3))}addEventListener('resize',ap);ap()})();
+var STAGE_ART={pipit:true},pendingFoeFx=[],pendingHits=[];
+const baseParty=[
+{id:'kael',name:'Kael',role:'Pengembara Terbuang',hp:85,maxHp:85,mp:30,maxMp:30,atk:18,def:10,matk:12,mdef:10,spd:14,crit:6,level:1,weapon:'Pedang Pengembara',armor:'Jubah Perjalanan',skills:['slash','heavy','fireslash','iceblade','thunder','guard']}
+];
+const skills={
+slash:{name:'Slash',type:'phys',power:1.5,cost:0,desc:'Serangan pedang dasar · ATK × 1.5 − DEF',elem:'Physical'},
+heavy:{name:'Power Strike',type:'phys',power:2.05,cost:8,desc:'Pukulan kuat · ATK × 2.05 − DEF',elem:'Physical'},
+fireslash:{name:'Fire Slash',type:'phys',power:1.45,cost:12,desc:'Tebasan api · Fire / Physical',elem:'Fire'},
+iceblade:{name:'Ice Blade',type:'magic',power:1.7,cost:12,desc:'Pedang es · Ice / Magic',elem:'Ice'},
+thunder:{name:'Thunder Thrust',type:'hybrid',power:1.35,cost:14,desc:'Tusukan petir · Lightning / Hybrid',elem:'Lightning'},
+fire:{name:'Flare',type:'magic',power:1.65,cost:12,desc:'Sihir api · MATK × 1.65 − MDEF',elem:'Fire'},
+ice:{name:'Frost Lance',type:'magic',power:1.9,cost:16,desc:'Tombak es · MATK × 1.9 − MDEF',elem:'Ice'},
+astral:{name:'Astral Break',type:'hybrid',power:1.25,cost:18,desc:'Resonansi gabungan · Hybrid',elem:'Astral'},
+mend:{name:'Mend',type:'support',power:.32,cost:14,desc:'Pulihkan 32% HP maksimum sekutu',elem:'Heal'},
+guard:{name:'Guard',type:'support',power:0,cost:0,desc:'Kurangi damage serangan berikutnya',elem:'Defend'},
+poisonblade:{name:'Venom Edge',type:'phys',power:1.05,cost:10,desc:'Damage fisik + Poison 3 giliran',elem:'Poison',status:'poison'},
+stun:{name:'Gravity Seal',type:'magic',power:.85,cost:20,desc:'Damage sihir + peluang Stun',elem:'Astral',status:'stun'},
+silence:{name:'Silence Seal',type:'magic',power:1.1,cost:15,desc:'Sihir resonansi · peluang Silence',elem:'Astral',status:'stun'},
+guardbreak:{name:'Shatter Armor',type:'phys',power:1.25,cost:12,desc:'Damage fisik + DEF turun 3 giliran',elem:'Physical',status:'break'}
+};
+let party,enemies,active=0,target=0,over=false,busy=false,logLines=[],turnCount=0;
+const elWeak={pipit:{Lightning:1.5,Ice:1.25,Wind:.5},goblin:{Lightning:1.5,Wind:1.5},slime:{Fire:1.5,Ice:.5,Lightning:1.1},darkmage:{Light:1.6,Wind:1.4,Fire:.7,Water:.7}};
+let encounterData=null,battleOutcome=null;
+try{encounterData=JSON.parse(localStorage.getItem('veyra-pending-encounter')||'null')}catch(e){encounterData=null}
+function reset(){
+ const integrated=!!encounterData;
+ party=JSON.parse(JSON.stringify(baseParty)).map(p=>{
+  const lv=integrated?Math.max(1,Number(encounterData.level)||1):1;
+  let savedStats={};try{savedStats=JSON.parse(localStorage.getItem('veyra-battle-player-stats')||'{}')}catch(e){}
+  const maxHp=Number(savedStats.maxHp)||Math.floor(85+(lv-1)*12),maxMp=Number(savedStats.maxMp)||Math.floor(30+(lv-1)*4);
+  p.maxHp=maxHp;p.hp=Math.min(maxHp,Math.max(1,Number(savedStats.hp)||maxHp));p.maxMp=maxMp;p.mp=Math.min(maxMp,Math.max(0,Number(savedStats.mp)||maxMp));
+  p.atk=Number(savedStats.atk)||18+(lv-1)*2;p.def=Number(savedStats.def)||10+(lv-1);p.matk=Number(savedStats.matk)||12+(lv-1)*2;p.mdef=Number(savedStats.mdef)||10+(lv-1);p.level=lv;
+  return {...p,effects:[],guard:0};
+ });
+ const lv=integrated?Math.max(1,Number(encounterData.level)||1):18,scale=integrated?.8+(lv-1)*.13:1;
+ const profiles={pipit:{id:'pipit',name:'Pipit Hitam',hp:92,atk:16,def:6,matk:10,mdef:8,spd:15,element:'Wind',weak:'Lightning',resist:'Wind',crit:6},slime:{id:'slime',name:'Moss Slime',hp:100,atk:15,def:7,matk:12,mdef:8,spd:7,element:'Earth',weak:'Fire',resist:'Ice',crit:2},goblin:{id:'goblin',name:'Forest Goblin',hp:125,atk:18,def:9,matk:6,mdef:7,spd:12,element:'Physical',weak:'Lightning',resist:'Wind',crit:4},darkmage:{id:'darkmage',name:'Mist Wisp',hp:88,atk:9,def:6,matk:20,mdef:12,spd:14,element:'Dark',weak:'Fire',resist:'Ice',crit:5}};
+ if(integrated){const base=profiles[encounterData.id]||profiles.slime;const mk=e=>({...e,hp:Math.floor(e.hp*scale),maxHp:Math.floor(e.hp*scale),atk:Math.max(3,Math.floor(e.atk*scale)),def:Math.max(1,Math.floor(e.def*scale)),matk:Math.max(2,Math.floor(e.matk*scale)),mdef:Math.max(1,Math.floor(e.mdef*scale)),effects:[]});enemies=[mk(base)];}
+ else{enemies=[{id:'goblin',name:'Goblin Warrior',hp:420,maxHp:420,atk:34,def:22,matk:8,mdef:14,spd:12,element:'Physical',effects:[],weak:'Lightning',resist:'Wind',crit:5},{id:'slime',name:'Ice Slime',hp:380,maxHp:380,atk:24,def:18,matk:25,mdef:22,spd:9,element:'Ice',effects:[],weak:'Fire',resist:'Ice',crit:3},{id:'darkmage',name:'Dark Mage',hp:360,maxHp:360,atk:20,def:15,matk:38,mdef:30,spd:16,element:'Dark',effects:[],weak:'Light',resist:'Fire',crit:8}]}
+ active=0;target=0;commandMode='attack';over=false;busy=false;turnCount=0;battleOutcome=null;logLines=[integrated?`${encounterData.name} muncul di ${encounterData.world}! Random encounter dimulai.`:'Pertempuran latihan dimulai! Manfaatkan elemen dan kelemahan musuh untuk memperoleh keunggulan.'];render()
+}
+function loadPartyData() {
+    const defaultData = {
+        gil: 100,
+        inventory: [
+            { id: "potion", name: "Potion", qty: 3, type: "consumable", target: "hp", value: 50 },
+            { id: "ether", name: "Ether", qty: 1, type: "consumable", target: "mp", value: 30 }
+        ],
+        party: {
+            kael: { name: "Kael", class: "Veilblade", hp: 120, maxHp: 120, mp: 40, maxMp: 40 }
+        }
+    };
+    const savedData = localStorage.getItem("veyra_party_data");
+    if (!savedData) {
+        localStorage.setItem("veyra_party_data", JSON.stringify(defaultData));
+        return defaultData;
+    }
+    return JSON.parse(savedData);
+}
+
+function savePartyData(data) {
+    localStorage.setItem("veyra_party_data", JSON.stringify(data));
+}
+
+// Memuat data dari desa ke dalam arena battle saat halaman dibuka
+let currentBattleData = loadPartyData();
+function fmt(n){return Math.max(0,Math.floor(n))}
+function aliveParty(){return party.filter(p=>p.hp>0)}
+function aliveEnemies(){return enemies.filter(e=>e.hp>0)}
+function log(s,cls=''){logLines.push(`<div class="${cls}">${s}</div>`);logLines=logLines.slice(-9);document.getElementById('log').innerHTML=logLines.join('');document.getElementById('log').scrollTop=9999}
+function effectOf(unit,id){return unit.effects.find(x=>x.id===id)}
+function stat(unit,key){let n=unit[key];if(unit.effects.some(e=>e.id==='break'&&e.turns>0)&&key==='def')n=Math.floor(n*.7);if(unit.effects.some(e=>e.id==='weakguard'&&e.turns>0)&&key==='mdef')n=Math.floor(n*.8);return n}
+function calculateDamage(att,def,s){let raw;if(s.type==='phys')raw=att.atk*s.power-stat(def,'def');else if(s.type==='magic')raw=att.matk*s.power-stat(def,'mdef');else raw=(att.atk+att.matk)*s.power-stat(def,'def')-stat(def,'mdef');let mult=1;if(s.elem&&elWeak[def.id]&&elWeak[def.id][s.elem])mult=elWeak[def.id][s.elem];if(def.weak===s.elem)mult=1.5;if(def.resist===s.elem)mult=.7;let critical=Math.random()*100<att.crit;return {damage:Math.max(1,Math.floor(raw*mult*(critical?1.5:1))),mult,critical,raw:Math.max(1,Math.floor(raw))}}
+function render(){renderParty();renderEnemies();renderStats();renderTargets();renderActions()}
+function renderParty(){document.getElementById('party').innerHTML=party.map((p,i)=>`<div class="fighter hero ${p.hp<=0?'dead':''} ${i===active?'selected':''}" data-party="${i}"><div class="sprite"></div><div class="fighter-name">${p.name}</div><div class="fighter-role">${p.role}</div><div class="mini"><div class="mini-line"><span>HP</span><span>${fmt(p.hp)}/${p.maxHp}</span></div><div class="bar"><div class="fill hp" style="width:${p.hp/p.maxHp*100}%"></div></div><div class="mini-line"><span>MP</span><span>${fmt(p.mp)}/${p.maxMp}</span></div><div class="bar"><div class="fill mp" style="width:${p.mp/p.maxMp*100}%"></div></div></div></div>`).join('');document.querySelectorAll('[data-party]').forEach(el=>el.onclick=()=>{if(!over&&!busy&&party[+el.dataset.party].hp>0){active=+el.dataset.party;render()}});applyPendingHits()}
+function renderEnemies(){document.getElementById('foes').innerHTML=enemies.map((e,i)=>`<div class="fighter enemy ${e.hp<=0?'dead':''} ${i===target&&e.hp>0?'targeted':''}" data-eid="${e.id}" data-enemy="${i}" aria-label="Target ${e.name}"><div class="sprite"></div><div class="fighter-name">${e.name}</div><div class="enemy-hp"><div class="enemy-hp-fill" style="width:${Math.max(0,e.hp/e.maxHp*100)}%"></div></div></div>`).join('');document.querySelectorAll('[data-enemy]').forEach(el=>el.onclick=()=>{if(!over&&!busy&&enemies[+el.dataset.enemy].hp>0){target=+el.dataset.enemy;renderEnemies();renderTargets();document.getElementById('actionLabel').textContent='Target: '+enemies[target].name}});renderStage()}
+function renderStats(){let p=party[active];document.getElementById('activeName').textContent=p.name+' · '+p.role;let stats=[['HP',`${fmt(p.hp)}/${p.maxHp}`,'red'],['MP',`${fmt(p.mp)}/${p.maxMp}`,'blue'],['ATK',p.atk,'red'],['DEF',stat(p,'def'),'green'],['MATK',p.matk,'purple'],['MDEF',stat(p,'mdef'),'blue'],['SPD',p.spd,'green'],['CRIT',p.crit+'%','orange']];document.getElementById('stats').innerHTML=stats.map(s=>`<div class="stat"><span>${s[0]}</span><b class="${s[2]}">${s[1]}</b></div>`).join('');document.getElementById('statusEffects').innerHTML=[...p.effects.map(e=>`<span class="tag ${e.id}">${e.name} ${e.turns}</span>`),`<span class="tag">Weapon: ${p.weapon}</span>`,`<span class="tag">Armor: ${p.armor}</span>`].join('')}
+let commandMode='attack';
+function renderTargets(){/* Target is selected directly on enemy sprites. */}
+function readInventory(){let inv={potion:0,ether:0};try{const saved=JSON.parse(localStorage.getItem('veyra-save-v1')||'null');if(saved&&saved.gameState&&saved.gameState.items)inv={...inv,...saved.gameState.items};}catch(e){}return inv}
+function useBattleItem(id){if(over||busy)return;const p=party[0],inv=readInventory();if(!inv[id]||((id==='potion'&&p.hp>=p.maxHp)||(id==='ether'&&p.mp>=p.maxMp))){log('Item tidak dapat digunakan sekarang.','hit');return;}inv[id]--;if(id==='potion'){const amount=Math.min(30,p.maxHp-p.hp);p.hp+=amount;log(`Kael menggunakan Potion: HP +${amount}.`,'heal')}else{const amount=Math.min(15,p.maxMp-p.mp);p.mp+=amount;log(`Kael menggunakan Ether: MP +${amount}.`,'spell')}try{const saved=JSON.parse(localStorage.getItem('veyra-save-v1')||'{}');saved.gameState=saved.gameState||{gold:0,items:{}};saved.gameState.items={...(saved.gameState.items||{}),...inv};localStorage.setItem('veyra-save-v1',JSON.stringify(saved));}catch(e){}render();setTimeout(enemyTurn,stageDelay())}
+function renderActions(){let p=party[active],pool=[];if(commandMode==='attack')pool=[['slash',skills.slash]];else if(commandMode==='phys')pool=p.skills.filter(id=>skills[id].type==='phys').map(id=>[id,skills[id]]);else if(commandMode==='magic')pool=p.skills.filter(id=>skills[id].type==='magic').map(id=>[id,skills[id]]);else if(commandMode==='hybrid')pool=p.skills.filter(id=>skills[id].type==='hybrid').map(id=>[id,skills[id]]);else if(commandMode==='defend')pool=[['guard',skills.guard]];else if(commandMode==='items'){const inv=readInventory();pool=[['__item_potion',{name:`Potion (${inv.potion})`,cost:0,desc:'Pulihkan 30 HP Kael.',type:'support',disabled:inv.potion<=0||p.hp>=p.maxHp}],['__item_ether',{name:`Ether (${inv.ether})`,cost:0,desc:'Pulihkan 15 MP Kael.',type:'support',disabled:inv.ether<=0||p.mp>=p.maxMp}]];}else if(commandMode==='run')pool=[['__run',{name:'Run Away',cost:0,desc:'Coba kabur dari pertarungan.'}]];document.getElementById('actionLabel').textContent=({attack:'Serangan dasar tanpa biaya MP.',phys:'Jurus serangan fisik (ATK).',magic:'Sihir serangan (MATK).',hybrid:'Serangan gabungan ATK + MATK.',defend:'Kurangi damage serangan berikutnya.',items:'Gunakan item satu kali pada giliran Kael.',run:'Coba melarikan diri dari pertarungan.'})[commandMode];document.getElementById('actions').innerHTML=pool.map(([id,s])=>{let disabled=over||busy||p.hp<=0||p.mp<(s.cost||0)||s.disabled||(!aliveEnemies().length&&id!=='guard');return `<button class="action ${s.type||'support'}" data-skill="${id}" ${disabled?'disabled':''}><b>${s.name}${s.cost?` · ${s.cost} MP`:''}</b><small>${s.desc}</small></button>`}).join('');document.querySelectorAll('[data-skill]').forEach(el=>el.onclick=()=>{if(el.dataset.skill==='__item_potion'||el.dataset.skill==='__item_ether'){useBattleItem(el.dataset.skill==='__item_potion'?'potion':'ether');return}if(el.dataset.skill==='__run'){if(over||busy)return;over=true;battleOutcome='flee';log('Kael berhasil melarikan diri. Kembali ke peta…','spell');render();if(encounterData)setTimeout(()=>document.getElementById('backVillage').click(),700);return}useSkill(el.dataset.skill)});document.querySelectorAll('[data-mode]').forEach(el=>{el.classList.toggle('active',el.dataset.mode===commandMode);el.onclick=()=>{if(over||busy)return;commandMode=el.dataset.mode;renderActions()}})}
+function addEffect(unit,id,name,turns){unit.effects=unit.effects.filter(e=>e.id!==id);unit.effects.push({id,name,turns})}
+function useSkill(id){if(over||busy)return;let user=party[active],s=skills[id];if(user.hp<=0||user.mp<s.cost)return;busy=true;user.mp-=s.cost;
+if(s.type==='support'){if(id==='guard'){user.guard=1;log(`${user.name} bersiap bertahan; damage serangan berikutnya berkurang 50%.`,'heal')}else{let ally=aliveParty().sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];if(!ally){busy=false;return}let amount=Math.floor(ally.maxHp*s.power),before=ally.hp;ally.hp=Math.min(ally.maxHp,ally.hp+amount);log(`${user.name} memakai Mend. ${ally.name} pulih ${ally.hp-before} HP.`,'heal')}}
+else{let enemy=enemies[target];if(!enemy||enemy.hp<=0){target=enemies.findIndex(e=>e.hp>0);enemy=enemies[target]}if(!enemy)return;let r=calculateDamage(user,enemy,s);const foeEl=document.querySelector(`[data-enemy=\"${target}\"]`),heroEl=document.querySelector(`[data-party=\"${active}\"]`);if(heroEl)heroEl.classList.add('attack-lunge');if(foeEl)foeEl.classList.add('hit-flash');pendingFoeFx.push({i:target,type:'hurt',dmg:r.damage});const arena=document.querySelector('.arena');if(arena){arena.classList.add('magic-flash');setTimeout(()=>arena.classList.remove('magic-flash'),350)}enemy.hp=Math.max(0,enemy.hp-r.damage);if(foeEl){const pop=document.createElement('div');pop.className='damage-pop';pop.textContent='-'+r.damage;foeEl.appendChild(pop);setTimeout(()=>pop.remove(),850)}let typ=s.type==='phys'?'Physical':s.type==='magic'?'Magic':'Hybrid';let msg=`${user.name} memakai ${s.name} [${typ}] → ${enemy.name}: ${r.damage} damage`;if(r.mult>1)msg+=' · WEAKNESS!';if(r.mult<1)msg+=' · RESIST';if(r.critical)msg+=' · CRITICAL!';log(msg,r.critical?'heal':s.type==='magic'||s.type==='hybrid'?'spell':'hit');
+if(s.status&&enemy.hp>0){if(s.status==='poison'){addEffect(enemy,'poison','Poison',3);log(`${enemy.name} terkena Poison selama 3 giliran.`,'spell')}if(s.status==='stun'&&Math.random()<.45){addEffect(enemy,'stun','Stun',1);log(`${enemy.name} terkena Stun!`,'spell')}if(s.status==='break'){addEffect(enemy,'break','DEF Down',3);log(`DEF ${enemy.name} turun 30% selama 3 giliran.`,'spell')}}
+if(enemy.hp<=0)log(`${enemy.name} dikalahkan!`,'heal')}
+render();if(!aliveEnemies().length){over=true;busy=false;battleOutcome='victory';log('VICTORY! Semua musuh dikalahkan. Kembali ke peta…','heal');render();if(encounterData)setTimeout(()=>document.getElementById('backVillage').click(),1300);return}setTimeout(enemyTurn,stageDelay())}
+function tickEffects(unit,isEnemy){for(let ef of [...unit.effects]){if(ef.id==='poison'){let d=Math.max(3,Math.floor(unit.maxHp*.06));unit.hp=Math.max(0,unit.hp-d);log(`${unit.name||'Musuh'} menerima ${d} damage Poison.`,'spell')}ef.turns--;if(ef.turns<=0)unit.effects=unit.effects.filter(e=>e!==ef)}}
+function enemyTurn(){if(over)return;turnCount++;
+for(let e of aliveEnemies().sort((a,b)=>b.spd-a.spd)){
+ if(!aliveParty().length)break;
+ if(effectOf(e,'stun')){log(`${e.name} kehilangan giliran akibat Stun.`,'spell');e.effects=e.effects.filter(x=>x.id!=='stun');continue}
+ let targets=aliveParty();let victim=targets[Math.floor(Math.random()*targets.length)];
+ let magic=e.matk>e.atk;let raw=magic?e.matk*1.25-stat(victim,'mdef'):e.atk*1.25-stat(victim,'def');
+ let crit=Math.random()*100<e.crit;let d=Math.max(1,Math.floor(raw*(crit?1.5:1)));
+ if(victim.guard){d=Math.max(1,Math.floor(d*.5));victim.guard=0}
+ victim.hp=Math.max(0,victim.hp-d);pendingHits.push({idx:party.indexOf(victim),d,crit,stage:!!STAGE_ART[e.id]});pendingFoeFx.push({i:enemies.indexOf(e),type:'atk',victim:party.indexOf(victim)});log(`${e.name} menyerang ${victim.name} (${magic?'Magic':'Physical'}): ${d} damage${crit?' · CRITICAL!':''}.`,'hit');
+ if(victim.hp<=0)log(`${victim.name} tumbang!`,'hit');
+}
+for(let unit of [...aliveEnemies(),...aliveParty()])tickEffects(unit,enemies.includes(unit));
+if(!aliveEnemies().length){over=true;busy=false;battleOutcome='victory';log('VICTORY! Efek status mengalahkan musuh terakhir. Kembali ke peta…','heal');render();if(encounterData)setTimeout(()=>document.getElementById('backVillage').click(),1300);return}
+if(!aliveParty().length){over=true;busy=false;battleOutcome='defeat';log('Kael tumbang. Kembali ke peta…','hit');render();if(encounterData)setTimeout(()=>document.getElementById('backVillage').click(),1300);return}
+busy=false;advance()}
+function advance(){if(over)return;let tries=0;do{active=(active+1)%party.length;tries++}while(party[active].hp<=0&&tries<party.length);render()}
+document.getElementById('reset').onclick=reset;document.getElementById('backVillage').onclick=()=>{
+ const outcome=battleOutcome||(over?'flee':'flee'),reward=encounterData?.reward||{exp:0,gold:0,potion:0};
+ localStorage.setItem('veyra-battle-result',JSON.stringify({at:Date.now(),outcome,reward,hero:party[0]?{hp:party[0].hp,mp:party[0].mp,atk:party[0].atk,def:party[0].def,matk:party[0].matk,mdef:party[0].mdef}:null,items:readInventory(),encounter:encounterData?.name||'Latihan'}));
+ localStorage.removeItem('veyra-pending-encounter');localStorage.setItem('veyra-last-battle',JSON.stringify({at:Date.now(),result:outcome}));
+ location.href='index.html?battle=returned';
+};reset();
+
+(function(){['pipit_0','pipit_1','pipit_2','pipit_3'].forEach(n=>{new Image().src='assets/enemies/'+n+'.png'})})();
+function stageDelay(){return enemies.some(e=>e.hp>0&&STAGE_ART[e.id])?720:250}
+function renderStage(){
+ const arena=document.querySelector('.arena');if(!arena)return;
+ let st=document.getElementById('stageFoes');if(!st){st=document.createElement('div');st.id='stageFoes';st.className='stage-foes';arena.appendChild(st)}
+ const want=new Set();let k=0;
+ enemies.forEach((e,i)=>{
+  if(!STAGE_ART[e.id])return;want.add(String(i));
+  let el=st.querySelector(`[data-i="${i}"]`);
+  if(!el){el=document.createElement('div');el.className='stage-foe';el.dataset.i=i;el.innerHTML=[0,1,2,3].map(n=>'<img class="f f'+n+'" src="assets/enemies/pipit_'+n+'.png" alt="" draggable="false">').join('');
+   el.style.right=(22+k*13)+'%';el.style.bottom=(14+(k%2)*8)+'%';
+   el.onclick=()=>{if(!over&&!busy&&enemies[i].hp>0){target=i;renderEnemies();renderTargets();document.getElementById('actionLabel').textContent='Target: '+enemies[target].name}};
+   el.addEventListener('animationend',ev=>{if(ev.animationName==='foeAtk'||ev.animationName==='foeHurt')el.classList.remove('atk','hurt')});
+   st.appendChild(el)}
+  k++;
+  el.classList.toggle('targeted',i===target&&e.hp>0);
+  if(e.hp<=0){if(!el.classList.contains('ko')){el.classList.remove('atk','hurt');el.classList.add('ko')}}
+  else el.classList.remove('ko');
+ });
+ [...st.children].forEach(el=>{if(!want.has(el.dataset.i))el.remove()});
+ const fx=pendingFoeFx;pendingFoeFx=[];
+ requestAnimationFrame(()=>{for(const f of fx){
+  const el=st.querySelector(`[data-i="${f.i}"]`);if(!el||el.classList.contains('ko'))continue;
+  if(f.type==='atk'){const hero=document.querySelector(`[data-party="${f.victim}"]`);if(hero){const a=el.getBoundingClientRect(),h=hero.getBoundingClientRect();el.style.setProperty('--dx',(h.left+h.width*.7-(a.left+a.width*.25))+'px');el.style.setProperty('--dy',(h.top+h.height*.35-(a.top+a.height*.5))+'px')}el.classList.remove('hurt','atk');void el.offsetWidth;el.classList.add('atk')}
+  else if(f.type==='hurt'){el.classList.remove('hurt','atk');void el.offsetWidth;el.classList.add('hurt');const pop=document.createElement('div');pop.className='damage-pop';pop.textContent='-'+f.dmg;el.appendChild(pop);setTimeout(()=>{pop.remove()},850)}
+ }});
+}
+
+function applyPendingHits(){const hits=pendingHits||[];pendingHits=[];for(const h of hits){const run=()=>{const el=document.querySelector(`[data-party="${h.idx}"]`);if(!el)return;el.classList.add('hit-flash');const pop=document.createElement('div');pop.className='damage-pop';pop.textContent='-'+h.d;el.appendChild(pop);setTimeout(()=>{pop.remove();el.classList.remove('hit-flash')},850)};if(h.stage)setTimeout(run,420);else run()}}
+(function kaelIdle(){const f=[];for(let i=0;i<6;i++){const im=new Image();im.src=`assets/kael_sprites/idle_${i}.png`;f.push(im)}['walk_2','walk_6'].forEach(n=>{new Image().src=`assets/kael_sprites/${n}.png`});let i=0;setInterval(()=>{i=(i+1)%6;document.documentElement.style.setProperty('--kael',`url(assets/kael_sprites/idle_${i}.png)`)},280)})();
+</script></body></html>
